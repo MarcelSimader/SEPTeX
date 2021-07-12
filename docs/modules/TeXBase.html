@@ -1,0 +1,455 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>TeXBase &mdash; SEPTeX 0.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LaTeX" href="LaTeX.html" />
+    <link rel="prev" title="TeXUtils" href="TeXUtils.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEPTeX
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="TeXUtils.html">TeXUtils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TeXBase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#texerror">TeXError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#texhandler">TeXHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#texresource">TeXResource</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#figure">Figure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#mathsenvironment">MathsEnvironment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TikZBase.html">TikZBase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzwriteable">TikZWriteable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikznamed">TikZNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrow">TikZArrow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzstyle">TikZStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzpicture">TikZPicture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzscope">TikZScope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzpath">TikZPath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzcircle">TikZCircle</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEPTeX</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>TeXBase</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/TeXBase.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPTeX.TeXBase">
+<span id="texbase"></span><h1>TeXBase<a class="headerlink" href="#module-SEPTeX.TeXBase" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>11.07.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v0.1.0.</span></p>
+</div>
+<div class="section" id="texerror">
+<h2>TeXError<a class="headerlink" href="#texerror" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXError">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TeXError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception class for the <code class="xref py py-mod docutils literal notranslate"><span class="pre">SEPTeX</span></code> package. This error keeps track of the TeX object which caused the error
+(see <code class="xref py py-attr docutils literal notranslate"><span class="pre">obj</span></code> attribute).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="texhandler">
+<h2>TeXHandler<a class="headerlink" href="#texhandler" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler">
+<em class="property"><span class="pre">final</span> <span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TeXHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_wrap_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TeXHandler</span></code></a> aids as container for lines of text to be written to a document. This class can automatically
+apply a specific level of indentation and hard-wrap lines that are too long.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The algorithm for the hard-wrap will only be applied when the <a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler.wrap_lines" title="SEPTeX.TeXBase.TeXHandler.wrap_lines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">wrap_lines()</span></code></a> method is called manually.
+The results of these calls will be stored in the instance. Furthermore, the algorithm will split up lines that
+are too long at available spaces. If no space is found, the line simply must exceed the given bounds.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>indent_level</strong> (<em>int</em>) – the number of tab character to place at the beginning of each line</p></li>
+<li><p><strong>line_wrap_length</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – keyword-only argument, when set to an int this value dictates how long a line can be before
+a pseudo soft-wrap is applied during the <a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler.write" title="SEPTeX.TeXBase.TeXHandler.write"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write()</span></code></a> operations of this instance</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.data">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Tuple[int,</span> <span class="pre">str]]</span></em><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.data" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of strings where each string is exactly one line in the document</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.indent_level">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">indent_level</span></span><em class="property"><span class="pre">:</span> <span class="pre">int</span></em><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.indent_level" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>what the default amount of indentation for this handler should be</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.line_wrap_length">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">line_wrap_length</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[int]</span></em><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.line_wrap_length" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the number of characters before a line is split into two using a soft-wrap, <strong>this means that in the handler,
+the line will still only have one entry but contain the newline character</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.wrap_lines">
+<span class="sig-name descname"><span class="pre">wrap_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hanging_indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.wrap_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the lines of this instance according to <a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler.line_wrap_length" title="SEPTeX.TeXBase.TeXHandler.line_wrap_length"><code class="xref py py-attr docutils literal notranslate"><span class="pre">line_wrap_length</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tab_width</strong> (<em>int</em>) – how wide (in characters) to consider a tab character (<code class="docutils literal notranslate"><span class="pre">\t</span></code>)</p></li>
+<li><p><strong>hanging_indent</strong> (<em>bool</em>) – whether or not to indent wrapped lines by one extra tab</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write object <code class="docutils literal notranslate"><span class="pre">s</span></code> to the handler.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string or bytes object, this function will perform some processing. If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a <a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TeXHandler</span></code></a>
+this function will extend the data of this instance with the given handler, and add the required number of tabs
+of this instance to the tabs already accumulated in the data tuple of the given handler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>Union</em><em>[</em><em>AnyStr</em><em>, </em><a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><em>SEPTeX.TeXBase.TeXHandler</em></a><em>]</em>) – the object to write, can be a <a class="reference internal" href="#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TeXHandler</span></code></a> or any string of any length including line breaks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXHandler.newline">
+<span class="sig-name descname"><span class="pre">newline</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXHandler.newline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an empty line.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="texresource">
+<h2>TeXResource<a class="headerlink" href="#texresource" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TeXResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_reopen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for marking a class as having an open and closed state, along with text data of some sort. This
+class requires <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> to be implemented to provide the contents of the handlers to any other caller.</p>
+<p>In addition to the open and closed states, one can configure the resource to allow multiple openings. The default
+behaviour is to throw an exception if the resource is opened a second time. The opening and closing is implemented as
+context manager, with <code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code> triggering an opening and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__exit__()</span></code> triggering a closing. The
+private helper methods <a class="reference internal" href="#SEPTeX.TeXBase.TeXResource.__require_closed__" title="SEPTeX.TeXBase.TeXResource.__require_closed__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_closed__()</span></code></a>, <a class="reference internal" href="#SEPTeX.TeXBase.TeXResource.__require_open__" title="SEPTeX.TeXBase.TeXResource.__require_open__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_open__()</span></code></a>, <a class="reference internal" href="#SEPTeX.TeXBase.TeXResource.__require_virgin__" title="SEPTeX.TeXBase.TeXResource.__require_virgin__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_virgin__()</span></code></a>, and
+<a class="reference internal" href="#SEPTeX.TeXBase.TeXResource.__require_used__" title="SEPTeX.TeXBase.TeXResource.__require_used__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__require_used__()</span></code></a> are provided to check these states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>can_reopen</strong> – keyword-only argument, determines whether or not opening this instance multiple times raises a
+<a class="reference internal" href="#SEPTeX.TeXBase.TeXError" title="SEPTeX.TeXBase.TeXError"><code class="xref py py-class docutils literal notranslate"><span class="pre">TeXError</span></code></a>, defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.open">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">open</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.open" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this resource is currently opened</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.__require_closed__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_closed__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.__require_closed__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to be closed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>LaTeXError</strong> – if the resource is open when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.__require_open__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_open__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.__require_open__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to be opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>LaTeXError</strong> – if the resource is closed when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.__require_virgin__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_virgin__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.__require_virgin__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to have never been opened.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>LaTeXError</strong> – if the resource has been opened once before when this function is called</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.__require_used__">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">__require_used__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.__require_used__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requires a resource to have been opened <em>and</em> closed at least once in the past.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame_depth</strong> (<em>int</em>) – how many stack frames to go backwards in order to retrieve the name of the function which
+represents the public API call which caused the error</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>LaTeXError</strong> – if the resource has not been opened and closed at least once in the past when this function is
+called</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="LaTeX.html" class="btn btn-neutral float-right" title="LaTeX" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="TeXUtils.html" class="btn btn-neutral float-left" title="TeXUtils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

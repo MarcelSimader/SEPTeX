@@ -382,7 +382,7 @@ class TikZNode(TikZDefinesNamed[TikZColor], TikZNamed):
 
 class TikZLabel(TikZDefinesNamed[TikZColor]):
 	"""
-	TODO write docs for TikZLabel
+	DOCS write docs for TikZLabel
 	"""
 
 	def __init__(self,

@@ -12,73 +12,10 @@
 from __future__ import annotations
 
 import abc
-from fractions import Fraction
 from inspect import getframeinfo, stack
-from numbers import Number
-from typing import Union, AnyStr, Tuple, List, final, Optional, NoReturn, Any, Set
+from typing import Union, AnyStr, Tuple, List, final, Optional, NoReturn
 
 from SEPModules.SEPPrinting import repr_string
-from SEPModules.maths import AlgebraicStructure
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-def vspace(length: Union[AnyStr, Number]) -> str:
-	""" Inserts a vertical space of length ``length`` in the document. """
-	return r"\vspace*{{{}}}".format(length)
-
-def parentheses(text: Any) -> str:
-	return r"\left( {} \right)".format(text)
-
-def brackets(text: Any) -> str:
-	return r"\left[ {} \right]".format(text)
-
-def braces(text: Any) -> str:
-	return r"\left\{{ {} \right\}}".format(text)
-
-def tex_maths_string(s: Any) -> str:
-	r"""
-	Formats the given object in a LaTeX-friendly way for **math mode**.
-
-    +----------------------+-------------------------------------------------------------------------------------+
-    | Supertype            | Behaviour                                                                           |
-    +----------------------+-------------------------------------------------------------------------------------+
-    | Fraction             | print as LaTeX fraction                                                             |
-    +----------------------+-------------------------------------------------------------------------------------+
-    | Set                  | print set in curly braces, call :py:func:`tex_maths_string` on                       |
-    |                      | each object of the set                                                              |
-    +----------------------+-------------------------------------------------------------------------------------+
-    | Tuple or List        | print list or tuple in square brackets, call :py:func:`tex_maths_string`             |
-    |                      | on each object of the set except if the object is a string                          |
-    +----------------------+-------------------------------------------------------------------------------------+
-    | Algebraic Structure  | print the set using :py:func:`tex_maths_string`, and format the operator             |
-    |                      | names as text, both set and operators are in parentheses                            |
-    +----------------------+-------------------------------------------------------------------------------------+
-
-    Default behaviour is to call the ``__str__`` method of an object.
-
-	:param s: the object to format
-	:return: a string which can be written to a LaTeX document in a math mode environment
-	"""
-	text_f = r"\text{{{}}}"
-
-	formats = {
-			Fraction          : lambda o: f"{'-' if o < 0 else ''}\\frac{{{abs(o.numerator)}}}{{{o.denominator}}}",
-			Set               : lambda o: braces(", ".join([tex_maths_string(el) for el in s])),
-			(Tuple, List,)    : lambda o: brackets(
-					", ".join([text_f.format(el) if isinstance(el, str) else tex_maths_string(el) for el in s])),
-			AlgebraicStructure: lambda o: parentheses(
-					f"{tex_maths_string(o.elements)}, {', '.join([text_f.format(op.__name__) for op in o.binary_operators])}")
-			}
-
-	# if sub-type of dict key
-	for super_type, format_function in formats.items():
-		if isinstance(s, super_type):
-			return format_function(s)
-
-	# default case
-	return str(s)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ CLASSES ~~~~~~~~~~~~~~~
@@ -87,7 +24,8 @@ def tex_maths_string(s: Any) -> str:
 @final
 class TeXError(Exception):
 	"""
-	Exception class for the :py:mod:`SEPTeX` module.
+	Exception class for the :py:mod:`SEPTeX` package. This error keeps track of the TeX object which caused the error
+	(see :py:attr:`obj` attribute).
 	"""
 
 	def __init__(self, msg: AnyStr, obj: Union[TeXHandler, TeXResource]):
@@ -139,7 +77,7 @@ class TeXHandler:
 		return self._line_wrap_length
 
 	def wrap_lines(self, *, tab_width: int = 4, hanging_indent: bool = True) -> None:
-		"""
+		r"""
 		Wraps the lines of this instance according to :py:attr:`line_wrap_length`.
 
 		:param tab_width: how wide (in characters) to consider a tab character (``\t``)
@@ -168,7 +106,7 @@ class TeXHandler:
 					right = comment + self._data[data_index][1][break_pos + 1:].lstrip()
 
 					# insert left and right
-					hanging_tab = 0 if not hanging_indent or last_line_wrapped else 1
+					hanging_tab = 1 if hanging_indent and not last_line_wrapped else 0
 					self._data[data_index] = (tabs, left)
 					self._data.insert(data_index + 1, (tabs + hanging_tab, right))
 
@@ -184,13 +122,13 @@ class TeXHandler:
 
 	def write(self, s: Union[AnyStr, TeXHandler]) -> None:
 		"""
-		Write string ``s`` to the handler.
+		Write object ``s`` to the handler.
 
-		If ``s`` is a string or bytes object, this function will perform some processing. If ``s`` is a :py:class:`LaTeXHandler`
-		this function will extend the data of this instance with the given handler, and *add the required number of tabs
-		of this instance to the tabs already accumulated in the data tuple of the given handler!*
+		If ``s`` is a string or bytes object, this function will perform some processing. If ``s`` is a :py:class:`TeXHandler`
+		this function will extend the data of this instance with the given handler, and add the required number of tabs
+		of this instance to the tabs already accumulated in the data tuple of the given handler.
 
-		:param s: the string to write, can be any string of any length including line breaks
+		:param s: the object to write, can be a :py:class:`TeXHandler` or any string of any length including line breaks
 		"""
 		# ++++ if handler, write and RETURN ++++
 		if isinstance(s, TeXHandler):
@@ -207,24 +145,11 @@ class TeXHandler:
 		""" Write an empty line. """
 		self.write("")
 
-	def readline(self, offset: int = 0, size: int = 1) -> Tuple[str, ...]:
-		"""
-		Read ``size`` lines from this document, starting at ``offset``.
-
-		:param offset: which line, starting at 0, should be the first to be read
-		:param size: how many lines to read, if the number of lines to read past the offset is larger than the number of
-			available lines this function will return the remaining lines
-		:return: the lines to be read as tuple of tuples, where each tuple entry contains the number of tabs to be added
-			to the line and the line contents themselves
-		:raise ValueError: if size is negative
-		"""
-		if size < 0 or offset < 0:
-			raise ValueError(f"size and offset parameters must be bigger than or equal to 0, received {size}")
-		if offset > len(self):
-			raise ValueError(f"offset cannot be bigger than number of lines in handler instance")
-		offset_from = offset
-		offset_to = min(offset + size, len(self))
-		return tuple(map(lambda e: e[1], self._data[offset_from:offset_to]))
+	def __getitem__(self, item: Union[int, slice]) -> Tuple[str, ...]:
+		try:
+			return tuple(map(lambda e: e[1], self._data[item]))
+		except IndexError as ie:
+			raise TeXError(f"Error while indexing: {ie}", self) from ie
 
 	def __len__(self) -> int:
 		""" :return: the number of lines stored in the :py:attr:`data` attribute """
@@ -247,13 +172,17 @@ class TeXResource(abc.ABC):
 	context manager, with :py:meth:`__enter__` triggering an opening and :py:meth:`__exit__` triggering a closing. The
 	private helper methods :py:meth:`__require_closed__`, :py:meth:`__require_open__`, :py:meth:`__require_virgin__`, and
 	:py:meth:`__require_used__` are provided to check these states.
+
+	:param can_reopen: keyword-only argument, determines whether or not opening this instance multiple times raises a
+		:py:class:`TeXError`, defaults to ``False``
 	"""
 
 	@staticmethod
 	@final
 	def __get_context__(n: int = 1) -> str:
 		"""
-		:return: the name of the function which called this function, ``n`` frames above the scope of the caller of this function.
+		:return: the name of the function which called this function, ``n`` frames above the scope of the caller of this
+			function.
 		"""
 		try:
 			frame = getframeinfo(stack()[n + 1][0])
@@ -268,6 +197,7 @@ class TeXResource(abc.ABC):
 
 	@property
 	def open(self) -> bool:
+		""" :return: whether or not this resource is currently opened """
 		return self._open
 
 	def __enter__(self) -> None:

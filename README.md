@@ -1,6 +1,6 @@
 # SEPTeX
 
-[![Publish to PyPI](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml/badge.svg)](https://github.com/SEOriginal/SEPModules/actions/workflows/python-publish.yml) 
+[![Publish to PyPI](https://github.com/MarcelSimader/SEPTeX/actions/workflows/python-publish.yml/badge.svg)](https://github.com/MarcelSimader/SEPTeX/actions/workflows/python-publish.yml)
 |  [Documentation](https://marcelsimader.github.io/SEPTeX/)
 
 SEPTeX is a wrapper library for generating TeX/TikZ code through Python.

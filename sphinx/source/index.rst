@@ -1,16 +1,14 @@
 ..  Author Marcel Simader
     Date 11.07.2021
 
-Welcome to SEPTeX's documentation!
+SEPTeX Public API Reference
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 4
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   modules/TeXUtils
+   modules/TeXBase
+   modules/LaTeX
+   modules/TikZBase
+   modules/TikZ
