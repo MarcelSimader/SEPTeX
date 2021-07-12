@@ -1,0 +1,22 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.6.29)  11 JUL 2021 23:55
+entering extended mode
+**q
+(/root/.miktex/texmfs/install/tex/latex-dev/tools/q.tex
+LaTeX2e <2020-10-01> patch level 4
+L3 programming layer <2021-02-18> File ignored
+)
+! Emergency stop.
+<*> q
+     
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 18 strings out of 481261
+ 456 string characters out of 2908927
+ 277830 words of memory out of 3000000
+ 17339 multiletter control sequences out of 15000+200000
+ 403430 words of font info for 27 fonts, out of 3000000 for 9000
+ 0 hyphenation exceptions out of 8191
+ 13i,0n,15p,82b,10s stack positions out of 5000i,500n,10000p,200000b,50000s
+!  ==> Fatal error occurred, no output PDF file produced!

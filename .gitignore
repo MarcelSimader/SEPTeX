@@ -1,0 +1,17 @@
+#python compiler and profiler files
+*.py.lprof
+__pycache__
+.venv
+
+#distro files
+build
+*.egg-info
+
+#misc files
+*.bak
+
+#IDE files
+.idea
+
+# testing files
+SEPModules/_test/tmp
