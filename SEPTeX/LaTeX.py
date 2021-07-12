@@ -18,7 +18,8 @@ from os import PathLike
 from subprocess import run
 from typing import Union, AnyStr, Tuple, List, Final, Collection, final, Literal, Any, Optional
 
-from SEPTeX.TeXBase import TeXResource, TeXHandler, TeXError, tex_maths_string
+from SEPTeX.TeXBase import TeXResource, TeXHandler, TeXError
+from SEPTeX.TeXUtils import tex_maths_string
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ DOCUMENT AND ENVIRONMENTS ~~~~~~~~~~~~~~~
@@ -51,11 +52,14 @@ class LaTeXDocument(TeXResource):
 	:param title: the title of the document
 	:param subtitle: the subtitle of the document, is ignored unless ``title`` is not ``None``
 	:param author: the author of the document
+	:param show_date: keyword-only argument, determines whether or not to include a date in the title
+	:param show_page_numbers: keyword-only argument, determines whether or not to show page numbers on all pages
 	:param line_wrap_length: keyword-only argument, if set to an int this value will dictate how long a line can be
 		before a pseudo soft-wrap is applied (see :py:class:`LaTeXHandler` for details)
 
 	"""
 
+	# cleandoc to remove leading whitespace of multiline string literal
 	LaTeXTemplate: Final = inspect.cleandoc(
 			r"""
 			\documentclass[{}]{{{}}}
@@ -97,34 +101,36 @@ class LaTeXDocument(TeXResource):
 		super(LaTeXDocument, self).__init__()
 
 		self._path = path
-		if not self._path.endswith(".tex"):
-			self._path += ".tex"
 		self._document_class = document_class
 		self._document_options = document_options
-
 		self._title = title
 		self._subtitle = subtitle
 		self._author = author
-		self._has_title = self._title is not None or self._author is not None
 		self._show_date = show_date
 		self._show_page_numbers = show_page_numbers
-
-		self._definition_list: List[Tuple[AnyStr, AnyStr]] = list()
 
 		# set up handlers
 		self._definitions = TeXHandler(indent_level=0)
 		self._preamble = TeXHandler(indent_level=0, line_wrap_length=line_wrap_length)
 		self._body = TeXHandler(indent_level=1, line_wrap_length=line_wrap_length)
 
+		# misc setup
+		self._has_title = self._title is not None or self._author is not None
+		self._definition_list: List[Tuple[AnyStr, AnyStr]] = list()
+		if not self._path.endswith(".tex"):
+			self._path += ".tex"
+
 		# default packages
 		self.use_package(*default_packages)
 
 	@property
 	def path(self) -> PathLike:
+		""" :return: the path of the ``.tex`` file that is to be written """
 		return os.path.abspath(self._path)
 
 	@property
 	def successfully_saved_tex(self) -> bool:
+		""" :return: whether or not this LaTeX document has been successfully saved to its ``.tex`` :py:attr:`path` """
 		return self._open_counter > 0 and not self._open and os.path.isfile(self.path)
 
 	@property
@@ -157,7 +163,7 @@ class LaTeXDocument(TeXResource):
 
 	@property
 	def line_wrap_length(self) -> Optional[int]:
-		""" :return: the line wrap length of the body, see :py:attr:`TeXHandler.line_wrap_length` for details """
+		""" :return: the line wrap length of the body, see :py:attr:`.TeXHandler.line_wrap_length` for details """
 		return self._body.line_wrap_length
 
 	@property
@@ -212,11 +218,8 @@ class LaTeXDocument(TeXResource):
 		Include a ``usetikzlibrary`` statement in this document. This function checks the list of already included libraries
 		to avoid duplicates.
 
-		..	note:: This implicitly includes the TikZ package, if it is not included already.
-
 		:param library: the name or names of the TikZ library to include
 		"""
-		self.use_package("tikz")
 		self.__inclusion_statement__(*library, definition_text="usetikzlibrary")
 
 	def page_break(self) -> None:
@@ -226,8 +229,8 @@ class LaTeXDocument(TeXResource):
 
 	def __init_document__(self):
 		"""
-		This function should be called when the context manager of a document is entered. It sets up basic things like
-		the page numbering and titles.
+		This function should be called when the context manager of a document is entered or if the super call of a subclass
+		has skipped this class in the inheritance chain. It sets up basic things like the page numbering and titles.
 		"""
 		# write title
 		if self._has_title:
@@ -339,7 +342,6 @@ class LaTeXDocument(TeXResource):
 				shutil.rmtree(out_aux_dir)
 
 	def __str__(self) -> str:
-		""" :return: a string representation of this document """
 		return self.LaTeXTemplate.format(
 				self._document_options,
 				self._document_class,
@@ -364,10 +366,12 @@ class LaTeXDocument(TeXResource):
 class LaTeXEnvironment(TeXResource):
 	r"""
 	Base class for an environment in a LaTeX document (see :py:class:`LaTeXDocument`). This class usually acts as base
-	class for extensions that add simpler ways to write to an environment.
+	class for extensions that add simpler ways to write to an environment, but it can also be used directly if an environment
+	that is not necessarily worth implementing is desired.
 
 	Example usage with two nested context managers: ::
 
+		...
 		with LaTeXEnvironment(document, "center") as env_center:
 			with LaTeXEnvironment(env_center, "equation", required_packages=("amsmath",)) as env_eq:
 				env_eq.write(r"\forall a, b \in \mathbb{R}, \exists c \in \mathbb{R} \colon a^2 + b^2 = c^2")
@@ -378,10 +382,10 @@ class LaTeXEnvironment(TeXResource):
 		:py:meth:`write`, and :py:meth:`newline`. Overwriting other methods is allowed if needed, unless marked as final.
 
 		It is highly recommended to use either a super call to this class or at least the private methods :py:meth:`_write`
-		and :py:meth:`_newline` to handle internal write calls to the LaTeXHandler instance, since these check additional
-		requirements.
+		and :py:meth:`_newline` to handle internal write calls to the :py:class:`.TeXHandler` instance, since these may
+		perform additional actions.
 
-	:param parent_env: the parent environment or document to this environment
+	:param parent_env: the parent :py:class:`LaTeXDocument` or :py:class:`LaTeXEnvironment` to this environment
 	:param environment_name: the name of the environment, this value is put for the ``\begin`` and ``\end`` commands
 	:param options: the options to pass to the environment, this value is put after the ``\begin`` command
 	:param required_packages: the packages which are required to use this environment
@@ -399,13 +403,13 @@ class LaTeXEnvironment(TeXResource):
 				 indent_level: int = 1):
 		super(LaTeXEnvironment, self).__init__()
 
-		self._document = None
 		self._parent_env = parent_env
 		self._environment_name = environment_name
 		if options == "" or (options.startswith("[") and options.endswith("]")):
 			self._options = options
 		else:
 			self._options = f"[{options}]"
+		self._document = None
 
 		# packages
 		self.document.use_package(*required_packages)
@@ -424,22 +428,26 @@ class LaTeXEnvironment(TeXResource):
 			self._document = self._parent_env
 			while not isinstance(self._document, LaTeXDocument):
 				if not isinstance(self._document, LaTeXEnvironment):
-					error_doc = type(self._document)
+					error_obj = type(self._document)
 					self._document = None
-					raise TeXError(
-							f"Found a value which is neither LaTeXDocument nor LaTeXEnvironment but {error_doc} "
-							f"while processing root document", self)
+					raise TeXError(f"Found a value which is neither LaTeXDocument nor LaTeXEnvironment but "
+								   f"{error_obj} while processing root document", self)
 				self._document = self._document._parent_env
 		return self._document
 
 	@final
 	@property
-	def parent_env(self) -> LaTeXDocument:
+	def parent_env(self) -> Union[LaTeXDocument, LaTeXEnvironment]:
+		""" :return: the parent :py:class:`.TeXResource` of this environment """
 		return self._parent_env
 
 	@final
 	@property
 	def parent_handler(self) -> TeXHandler:
+		"""
+		:return: the handler of the :py:attr:`parent_env` resource, in the case of :py:class:`LaTeXDocument` this
+			function will return the handler of the body
+		"""
 		# get handler of parent instance (body for document!)
 		if isinstance(self._parent_env, LaTeXDocument):
 			return self._parent_env.body
@@ -457,10 +465,12 @@ class LaTeXEnvironment(TeXResource):
 
 	@property
 	def begin_text(self) -> str:
+		""" :return: the definition text to open this environment in the TeX source """
 		return self.BEGIN_TEMPLATE.format(self._environment_name, self._options)
 
 	@property
 	def end_text(self) -> str:
+		""" :return: the definition text to close this environment in the TeX source """
 		return self.END_TEMPLATE.format(self._environment_name)
 
 	def __enter__(self) -> LaTeXEnvironment:
@@ -510,7 +520,6 @@ class LaTeXEnvironment(TeXResource):
 		self._handler.newline()
 
 	def __str__(self) -> str:
-		""" :return: a string representation of this environment """
 		return f"{self.begin_text}\n{str(self._handler)}\n{self.end_text}"
 
 	def __repr__(self) -> str:
@@ -526,9 +535,9 @@ class LaTeXEnvironment(TeXResource):
 @final
 class Center(LaTeXEnvironment):
 	"""
-	:py:class:`Center` represents the standard LaTeX ``center`` environment. It has no options or required packages.
+	:py:class:`Center` represents the standard LaTeX ``center`` environment. It has no options and no required packages.
 
-	:param parent_env: the parent environment or document to this environment
+	:param parent_env: the parent :py:class:`LaTeXDocument` or :py:class:`LaTeXEnvironment` to this environment
 	:param indent_level: the number of tab characters to indent this environment relative to the parent environment
 	"""
 
@@ -546,8 +555,8 @@ class Figure(LaTeXEnvironment):
 	:py:class:`Figure` represents the standard LaTeX ``figure`` environment. It can be initialized with a caption, a label,
 	and options. The options default to ``h!`` to force placement at the location of the definition of the figure.
 
-	When referencing this figure use the :py:attr:`label` property as follows, as it adds the ``fig:`` prefix
-	automatically when left out and makes referencing easier: ::
+	When referencing this figure, use the :py:attr:`label` property as follows, as it adds the ``fig:`` prefix
+	automatically when left out and makes referencing easier and less error-prone: ::
 
 		with LaTeXDocument("ham.tex") as (doc, _, _):
 			f1 = Figure(doc, "Caption.", "a-label")
@@ -556,7 +565,7 @@ class Figure(LaTeXEnvironment):
 			f2 = Figure(doc, "Spam Ham Caption.", "fig:label-label")
 			assert f2.label == "fig:label-label"
 
-	:param parent_env: the parent environment or document to this environment
+	:param parent_env: the parent :py:class:`LaTeXDocument` or :py:class:`LaTeXEnvironment` to this environment
 	:param caption: the caption of the figure, may be ``None``
 	:param label: the label of the figure, can include ``fig:`` as prefix but if this is absent the prefix will be added
 		automatically by the :py:attr:`label` property, may be ``None``
@@ -606,12 +615,12 @@ class Figure(LaTeXEnvironment):
 
 class MathsEnvironment(LaTeXEnvironment):
 	r"""
-	:py:class:`MathsEnvironment` represents a base implementation of any (``amsmath``) math environment. It can be passed
-	the star flag upon creation, which will be inserted at the start of the environment name. When writing to this instance,
-	text will automatically be formatted using :py:func:`TeXBase.tex_maths_string` and the :py:meth:`newline` method will
-	write a double backslash ``\\`` instead of the newline character ``\n``.
+	:py:class:`MathsEnvironment` represents a base implementation of any ``amsmath`` math environment which uses a star,
+	and non-star version. It can be passed the star flag upon creation, which will be inserted at the start of the environment
+	name. When writing to this instance, text will automatically be formatted using :py:func:`.tex_maths_string` and the
+	:py:meth:`newline` method will write a double backslash ``\\`` instead of the newline character ``\n``.
 
-	:param parent_env: the parent environment or document to this environment
+	:param parent_env: the parent :py:class:`LaTeXDocument` or :py:class:`LaTeXEnvironment` to this environment
 	:param env_name: the parent environment or document to this environment
 	:param star: whether or not to prefix the environment name with a star like so: ``*env_name`` or ``env_name``
 	:param indent_level: the number of tab characters to indent this environment relative to the parent environment
@@ -630,8 +639,8 @@ class MathsEnvironment(LaTeXEnvironment):
 
 	def write(self, s: Any) -> None:
 		r"""
-		Shorthand for writing to the handler of this instance. Automatically calls :py:func:`TeXBase.tex_maths_string` on
-		every object ``s`` passed to it.
+		Shorthand for writing to the handler of this instance. Automatically applies :py:func:`.tex_maths_string` to every
+		``s`` object passed to it.
 
 		:raise TeXError: if the document has not been opened
 		"""
@@ -640,7 +649,7 @@ class MathsEnvironment(LaTeXEnvironment):
 	def newline(self) -> None:
 		r"""
 		Shorthand for writing a newline to the handler of this instance. Instead of ``\n`` this method places ``\\`` to
-		indicate a line break.
+		cause a line break.
 
 		:raise TeXError: if the document has not been opened
 		"""

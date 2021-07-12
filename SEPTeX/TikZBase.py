@@ -38,8 +38,8 @@ TIKZ_VALUE: Final = Union[AnyStr, int, float]
 
 class TikZWriteable(abc.ABC):
 	"""
-	Abstract base class for all TikZ objects which can be written to a :py:class:`TeXBase.TeXHandler`. This class requires
-	all subclasses to implement the :py:meth:`__str__` method, because this method will be called when writing this instance
+	Abstract base class for all TikZ objects which can be written to a :py:class:`.TeXHandler`. This class requires all
+	subclasses to implement the :py:meth:`__str__` method, because this method will be called when writing this instance
 	to a handler.
 
 	:param required_packages: a collection of the names of the packages which are required to use a subclass of this class
@@ -73,11 +73,12 @@ class TikZWriteable(abc.ABC):
 
 	@abc.abstractmethod
 	def __str__(self) -> str:
+		""" DOCS add abstract docs """
 		raise NotImplementedError("Subclasses of TikZWriteable must implement this method")
 
 class TikZNamed(TikZWriteable, abc.ABC):
 	"""
-	TODO write docs for TikZNamed
+	DOCS write docs for TikZNamed
 	"""
 
 	def __init__(self,
@@ -102,6 +103,10 @@ class TikZNamed(TikZWriteable, abc.ABC):
 	@abc.abstractmethod
 	def __eq__(self, other) -> bool:
 		raise NotImplementedError("Subclasses of TikZNamed must implement this method")
+
+	@abc.abstractmethod
+	def __str__(self) -> str:
+		raise NotImplementedError("Subclasses of TikZWriteable must implement this method")
 
 TN: Final = TypeVar("TN", bound=TikZNamed)
 """ The type variable used to mark an object as being at least :py:class:`TikZWriteable`. """
@@ -240,7 +245,7 @@ class TikZColor(TikZNamed, Generic[T]):
 
 	@property
 	def name(self) -> str:
-		""" :return: the name, different from :py:meth:`full_name` and :py:meth:`__str__` since this does not include opacity """
+		""" :return: the name, different from :py:meth:`xcolor_name` and :py:meth:`__str__` since this does not include opacity """
 		return self._name
 
 	@property
@@ -249,7 +254,7 @@ class TikZColor(TikZNamed, Generic[T]):
 		return f"\\definecolor{{{self._name}}}{{{self._mode}}}{{{self.red}, {self.green}, {self.blue}}}"
 
 	@property
-	def full_name(self) -> str:
+	def xcolor_name(self) -> str:
 		""" :return: a string containing the ``xcolor`` name to be used in a LaTeX document, alias for :py:meth:`__str__` """
 		return str(self)
 
@@ -556,8 +561,7 @@ class TikZArrow(_TikZArrow):
 class TikZStyle:
 	r"""
 	:py:class:`TikZStyle` holds information about what styles to apply to a TikZ object. This class implements a container,
-	and the :py:meth:`__getitem__` and :py:meth:`__getattribute__` methods. A style can be accessed using the following
-	ways:
+	and the :py:meth:`__getitem__` and :py:meth:`__getattr__` methods. A style can be accessed in the following ways:
 
 	>>> scale_style = TikZStyle(x_scale="2cm")
 	>>> assert scale_style.x_scale == "2cm"
@@ -566,7 +570,7 @@ class TikZStyle:
 	>>> assert scale_style["x-scale"] == "2cm"
 	>>> assert scale_style.style["x scale"] == "2cm" # space is needed here! this use is discouraged
 
-	Additionally, some methods of this instance will ignore None values:
+	Additionally, some methods of this instance will ignore ``None`` values:
 
 	>>> draw_style = TikZStyle(draw=True)
 	>>> assert len(draw_style) == 1 # all other values are None
@@ -673,7 +677,7 @@ class TikZStyle:
 
 	@property
 	def style(self) -> Dict[AnyStr, DICT_VAL]:
-		""" :return: a deep copy of the styles stored in this instance """
+		""" :return: a copy of the styles stored in this instance """
 		return dict(self._style)
 
 	@property
@@ -757,19 +761,22 @@ class TikZStyle:
 
 class TikZPicture(LaTeXEnvironment):
 	r"""
-	:py:class:`TikZPicture` represents the standard TikZ ``tikzpicture`` environment. This class aids in registering colors,
-	and writing special TikZ objects to the document.
+	:py:class:`TikZPicture` represents the standard TikZ ``tikzpicture`` environment. This class aids in registering
+	:py:class:`TikZNamed` objects and writing special composite objects.
 
 	..	warning::
 
-		When a :py:class:`TikZNoded` object registers its used nodes implicitly with this class, the nodes will be reused
-		if a node with matching name is found. Furthermore, the saved list of node objects cannot be passed on or inherited
-		to other :py:class:`TikZPicture` or :py:class:`TikZScope` environments. This is done so each "namespace" stays free
-		of node pollution.
+		When a :py:class:`TikZNamed` object is written to this class, its :py:attr:`TikZNamed.definition` string will be
+		directly written to the document without registering it, or checking if the node has been written to this instance
+		before. However, when a :py:class:`TikZDefinesNamed` object is written to this class, all the registered
+		:py:class:`TikZNamed` objects will be recursively written and registered, so that they can be reused without
+		overwriting the old definitions. If one desires to redefine them anyway, one can write them directly to the
+		instance manually or simply rename the objects to cause a new definition to be registered.
 
-		This is similar to how :py:class:`TikZColor` objects behave with this class, with the key difference being that
-		colors **can** be passed on to other :py:class:`TikZPicture` environments, and are implicitly passed on to child
-		:py:class:`TikZScope` environments.
+	..	note::
+
+		Registered :py:class:`TikZNamed` objects are implicitly inherited to :py:class:`TikZScope` environments defined
+		with this class as parent.
 
 	:param parent_env: the parent environment or document to this environment
 	:param style: the main style to use for this environment
@@ -800,7 +807,7 @@ class TikZPicture(LaTeXEnvironment):
 
 	@property
 	def defined_named_objects(self) -> Tuple[TikZNamed]:
-		""" :return: the :py:class`TikZNamed` objects which have so far been defined by this environment """
+		""" :return: the :py:class:`TikZNamed` objects which have so far been defined by this environment """
 		return tuple(self._defined_named_objects)
 
 	def define_named_object(self, *obj: TikZNamed) -> None:
@@ -829,6 +836,7 @@ class TikZPicture(LaTeXEnvironment):
 		Write ``s`` to the handler of this instance.
 
 		The following conditions apply to special object types:
+
 			-	If ``s`` is a string this method will simply write it.
 
 			-	If ``s`` is a :py:class:`TikZWriteable` object this method will first register the required packages, then
@@ -836,7 +844,7 @@ class TikZPicture(LaTeXEnvironment):
 			 	end if it is missing.
 
 				-	If ``s`` is also a :py:class:`TikZDefinesNamed` object this method will additionally register all the
-					named objects if it has not been defined with the same type and name in this instance before.
+					named objects recursively, if it has not been defined with the same type and name in this instance before.
 
 		:param s: the object to write to the handler
 		"""
@@ -871,14 +879,14 @@ class TikZPicture(LaTeXEnvironment):
 class TikZScope(TikZPicture):
 	"""
 	:py:class:`TikZScope` represents the standard TikZ ``scope`` environment. It can only be instantiated with a parent
-	environment inheriting from :py:class:`TikZPicture`. This environment will automatically include all objects registered
-	by the parent environment in its namespace.
+	environment inheriting from :py:class:`TikZPicture`. This environment will automatically include all :py:class:`TikZNamed`
+	objects registered by the parent environment in its namespace.
 
 	:param parent_env: the parent environment or document to this environment
 	:param style: the main style to use for this environment
 	:param indent_level: the number of tab characters to indent this environment relative to the parent environment
 
-	:raise TypeError: if the passed ``parent_env`` is not an instance of a :py:class:`TikZPicture` class
+	:raise TypeError: if the passed ``parent_env`` is not an instance of a :py:class:`TikZPicture` class or subclass thereof
 	"""
 
 	def __init__(self,

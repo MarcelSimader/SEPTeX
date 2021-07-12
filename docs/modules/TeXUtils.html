@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>TeXUtils &mdash; SEPTeX 0.2.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TeXBase" href="TeXBase.html" />
+    <link rel="prev" title="SEPTeX Public API Reference" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> SEPTeX
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">TeXUtils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TeXBase.html">TeXBase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TeXBase.html#texerror">TeXError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TeXBase.html#texhandler">TeXHandler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TeXBase.html#texresource">TeXResource</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#figure">Figure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#mathsenvironment">MathsEnvironment</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TikZBase.html">TikZBase</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzwriteable">TikZWriteable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikznamed">TikZNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrow">TikZArrow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzstyle">TikZStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzpicture">TikZPicture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzscope">TikZScope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzpath">TikZPath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzcircle">TikZCircle</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SEPTeX</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>TeXUtils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/TeXUtils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-SEPTeX.TeXUtils">
+<span id="texutils"></span><h1>TeXUtils<a class="headerlink" href="#module-SEPTeX.TeXUtils" title="Permalink to this headline">¶</a></h1>
+<dl class="field-list simple">
+<dt class="field-odd">Author</dt>
+<dd class="field-odd"><p>Marcel Simader</p>
+</dd>
+<dt class="field-even">Date</dt>
+<dd class="field-even"><p>12.07.2021</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version v0.2.0.</span></p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.tex_maths_string">
+<span class="sig-name descname"><span class="pre">tex_maths_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.tex_maths_string" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Formats the given object in a LaTeX-friendly way for <em>math mode</em>.</p>
+</div></blockquote>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Supertype</p></th>
+<th class="head"><p>Behaviour</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fraction</p></td>
+<td><p>print as LaTeX fraction</p></td>
+</tr>
+<tr class="row-odd"><td><p>Set</p></td>
+<td><p>print set in curly braces, call <a class="reference internal" href="#SEPTeX.TeXUtils.tex_maths_string" title="SEPTeX.TeXUtils.tex_maths_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">tex_maths_string()</span></code></a> on
+each object of the set</p></td>
+</tr>
+<tr class="row-even"><td><p>Tuple or List</p></td>
+<td><p>print list or tuple in square brackets, call <a class="reference internal" href="#SEPTeX.TeXUtils.tex_maths_string" title="SEPTeX.TeXUtils.tex_maths_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">tex_maths_string()</span></code></a>
+on each object of the set except if the object is a string</p></td>
+</tr>
+<tr class="row-odd"><td><p>Algebraic Structure</p></td>
+<td><p>print the set using <a class="reference internal" href="#SEPTeX.TeXUtils.tex_maths_string" title="SEPTeX.TeXUtils.tex_maths_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">tex_maths_string()</span></code></a>, and format the operator
+names as text, both set and operators are in parentheses</p></td>
+</tr>
+</tbody>
+</table>
+<p>Default behaviour is to call the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of an object.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">param s</dt>
+<dd class="field-odd"><p>the object to format</p>
+</dd>
+<dt class="field-even">return</dt>
+<dd class="field-even"><p>a string which can be written to a LaTeX document in a math mode environment</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="TeXBase.html" class="btn btn-neutral float-right" title="TeXBase" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="SEPTeX Public API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcel Simader.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
