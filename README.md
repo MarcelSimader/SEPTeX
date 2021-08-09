@@ -9,16 +9,27 @@ This project is in version ``v0.x.y`` and hence in rapid development phase. Once
 
 ---
 
-The package is of the following structure:
-- ### SEPTeX
-  The basic TeX wrapper classes which form the framework.
+The package currently divided into two basic components: the TeX component, and the TikZ component. Below is an outline of the most important namespaces:
 
-- ### SEPTikZ
-  The TikZ objects and environments which form the TikZ framework.
+- ### TeX Part
 
-> Under construction:
-> - ### SEPGraph
->   More complex graph data structured and algorithms which interface SEPTikZ.
+  - #### TeXBase
+    The basic TeX wrapper classes which form the framework.
+  - #### LaTeX
+    The LaTeX wrapper classes extending ``TeXBase``.
+  - #### TeXUtils
+    Diverse functions for converting between different objects and ``SEPTeX`` objects.
+
+- ### TikZ Part
+
+  - #### TikZBase
+    The TikZ objects and environments which form the TikZ framework.
+  - #### TikZ
+    Concrete TikZ types extending ``TikZBase``.
+
+  > Under construction:
+  > - #### TikZGraph
+  >   More complex graph data structures and algorithms which interface ``TikZ``.
 
 ---
 
