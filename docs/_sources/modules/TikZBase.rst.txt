@@ -6,27 +6,26 @@ TikZBase
 
 ..  automodule:: SEPTeX.TikZBase
 
-..	autodata:: SEPTeX.TikZBase.TIKZ_VALUE
+..	autodata:: SEPTeX.TikZBase.TikZValue
 
 TikZWriteable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..	autoclass:: SEPTeX.TikZBase.TikZWriteable
-	:special-members: __register_required_package__, __register_required_tikz_library__, __str__
+	:special-members: __register_required_package__, __register_required_tikz_library__, __hash__, __eq__
 	:members:
 
 TikZNamed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..	autoclass:: SEPTeX.TikZBase.TikZNamed
-	:special-members: __str__, __hash__, __eq__
 	:members:
 
-TikZDefinesNamed
+TikZDefinesWriteable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-..	autoclass:: SEPTeX.TikZBase.TikZDefinesNamed
-	:special-members: __register_named_object__
+..	autoclass:: SEPTeX.TikZBase.TikZDefinesWriteable
+	:special-members: __register_writeable_object__
 	:members:
 
 TikZColor
@@ -55,6 +54,11 @@ TikZColor
 
 ..	autoclass:: SEPTeX.TikZBase.TikZColor
 	:members:
+
+TikZArrowDirection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.TikZBase.TikZArrowDirection
 
 TikZArrow
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

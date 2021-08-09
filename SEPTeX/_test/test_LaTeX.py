@@ -115,11 +115,11 @@ class TestLaTeXDocument(LaTeXDocumentTestCase):
 
 		# only test on one for now so it's faster
 		self.assertRaises(NotImplementedError, lambda: self.doc1.to_pdf(path, engine="abc123"))
-		self.doc1.to_pdf(path, overwrite=False, delete_aux_files=False, engine="pdftex", custom_options="")
+		self.doc1.to_pdf(path, overwrite=False, delete_aux_files=False, engine="pdftex")
 		self.assertTrue(os.path.isdir(aux_path))
 		self.assertTrue(os.path.isfile(path))
 		self.assertRaises(FileExistsError, lambda: self.doc1.to_pdf(path))
-		self.doc1.to_pdf(path, overwrite=True, delete_aux_files=True, engine="pdftex", custom_options="")
+		self.doc1.to_pdf(path, overwrite=True, delete_aux_files=True, engine="pdftex")
 		self.assertFalse(os.path.isdir(aux_path))
 		self.assertTrue(os.path.isfile(path))
 

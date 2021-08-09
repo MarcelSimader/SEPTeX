@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>TikZBase &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>TikZBase &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -68,7 +68,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -102,6 +102,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
@@ -112,8 +113,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzpicture">TikZPicture</a></li>
@@ -121,7 +123,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzcircle">TikZCircle</a></li>
@@ -208,8 +214,8 @@
 <p><span class="versionmodified added">New in version v0.1.0.</span></p>
 </div>
 <dl class="py data">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TIKZ_VALUE">
-<span class="sig-name descname"><span class="pre">TIKZ_VALUE</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TIKZ_VALUE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZValue">
+<span class="sig-name descname"><span class="pre">TikZValue</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type alias for a TikZ key value.</p>
 <p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">AnyStr</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]</p>
 </dd></dl>
@@ -220,8 +226,10 @@
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZWriteable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all TikZ objects which can be written to a <a class="reference internal" href="TeXBase.html#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">TeXHandler</span></code></a>. This class requires all
-subclasses to implement the <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable.__str__" title="SEPTeX.TikZBase.TikZWriteable.__str__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code></a> method, because this method will be called when writing this instance
-to a handler.</p>
+subclasses to implement the <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable.to_tikz" title="SEPTeX.TikZBase.TikZWriteable.to_tikz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tikz()</span></code></a>, <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable.__hash__" title="SEPTeX.TikZBase.TikZWriteable.__hash__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__hash__()</span></code></a>, and <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable.__eq__" title="SEPTeX.TikZBase.TikZWriteable.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a> methods. The latter two
+are required in order to store these objects in sets and dictionaries. <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> objects should only
+compare equal if they are semantically equal.</p>
+<p>The method <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> is final and calls the abstract method <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable.to_tikz" title="SEPTeX.TikZBase.TikZWriteable.to_tikz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tikz()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -234,7 +242,7 @@ of this class</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.__register_required_package__">
 <span class="sig-name descname"><span class="pre">__register_required_package__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">package</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.__register_required_package__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register one or multiple required packages with this instance.</p>
+<dd><p>Registers one or multiple required packages with this instance.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -242,14 +250,14 @@ of this class</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.__register_required_tikz_library__">
 <span class="sig-name descname"><span class="pre">__register_required_tikz_library__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">library</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.__register_required_tikz_library__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register one or multiple required TikZ libraries with this instance.</p>
+<dd><p>Registers one or multiple required TikZ libraries with this instance.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.required_packages">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_packages</span></span><em class="property"><span class="pre">:</span> <span class="pre">Collection</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.required_packages" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_packages</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.required_packages" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the packages required to use this class in a document</p>
@@ -259,7 +267,7 @@ of this class</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.required_tikz_libraries">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_tikz_libraries</span></span><em class="property"><span class="pre">:</span> <span class="pre">Collection</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.required_tikz_libraries" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_tikz_libraries</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.required_tikz_libraries" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the TikZ libraries required to use this class in a document</p>
@@ -268,9 +276,25 @@ of this class</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.__str__">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>DOCS add abstract docs</p>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.to_tikz">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.__hash__">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return hash(self).</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZWriteable.__eq__">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZWriteable.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -283,29 +307,45 @@ of this class</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZNamed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed" title="Permalink to this definition">¶</a></dt>
-<dd><p>DOCS write docs for TikZNamed</p>
+<dd><p>Abstract base class for a <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> object which can be defined in a <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> and then referenced
+by its name. All subclasses of this class must implement the <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.name" title="SEPTeX.TikZBase.TikZNamed.name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">name()</span></code></a>, and <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.definition" title="SEPTeX.TikZBase.TikZNamed.definition"><code class="xref py py-meth docutils literal notranslate"><span class="pre">definition()</span></code></a> methods. The
+final methods <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code>, and <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.to_tikz" title="SEPTeX.TikZBase.TikZNamed.to_tikz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tikz()</span></code></a> are mapped to the abstract method <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.name" title="SEPTeX.TikZBase.TikZNamed.name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">name()</span></code></a>.</p>
+<p>The final methods <code class="xref py py-meth docutils literal notranslate"><span class="pre">__hash__()</span></code>, and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code> compare two <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects based solely
+on an instance check and the return value of the abstract method <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.name" title="SEPTeX.TikZBase.TikZNamed.name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">name()</span></code></a>. This means that two TikZNamed objects
+with the same name are treated as being equal, regardless of their semantic contents (as is the case in TikZ itself).</p>
 <dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the packages which are required to use a subclass of this class</p></li>
+<li><p><strong>required_tikz_libraries</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the TikZ libraries which are required to use a subclass
+of this class</p></li>
+</ul>
+</dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.__hash__">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.__hash__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return hash(self).</p>
-<dl class="field-list simple">
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.name">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the TikZ name of this object as string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.definition">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.definition" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the definition string of this object</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.__eq__">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.__eq__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return self==value.</p>
-<dl class="field-list simple">
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.__str__">
-<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>DOCS add abstract docs</p>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZNamed.to_tikz">
+<em class="property"><span class="pre">final</span> </em><span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZNamed.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -313,21 +353,24 @@ of this class</p></li>
 </dd></dl>
 
 </div>
-<div class="section" id="tikzdefinesnamed">
-<h2>TikZDefinesNamed<a class="headerlink" href="#tikzdefinesnamed" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tikzdefineswriteable">
+<h2>TikZDefinesWriteable<a class="headerlink" href="#tikzdefineswriteable" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesNamed">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZDefinesNamed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">styles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">named_objs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesNamed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class for marking a subclass as using <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects in an ordered definition list. Each
-object registered with an instance of this class must be associated with a name and subclass the <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a>
-class.</p>
-<p>This class must be inherited from in order for the <a class="reference internal" href="#SEPTeX.TikZBase.TikZPicture" title="SEPTeX.TikZBase.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> class to be able to register and define
-the named objects stored within it and draw the instance.</p>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesWriteable">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZDefinesWriteable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_packages</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_tikz_libraries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_writeable_objs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesWriteable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for marking a subclass as keeping <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> objects in an ordered definition set.
+Each object registered with an instance of this class must inherit from <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> and (optionally) be
+of the type specified by the generic type variable.</p>
+<p>This class is useful when one desires to build up more complex TikZ objects. For example, the <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZStyle</span></code></a>
+class inherits from <code class="docutils literal notranslate"><span class="pre">TikZDefinesWriteable[TikZColor]</span></code>, since each TikZ style also stores a number of <a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZColor</span></code></a>
+objects, which implement <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a>.</p>
+<p>The handling of these <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> object is solved internally in the <a class="reference internal" href="#SEPTeX.TikZBase.TikZPicture" title="SEPTeX.TikZBase.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> class.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This class internally stores each registered named object as a dictionary, so the objects will be compared using
 the <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> and <code class="docutils literal notranslate"><span class="pre">__hash__</span></code> methods. Only the least recently registered object is kept, if two objects of the
-same type and same name are registered.</p>
+same type and same name are registered. See the documentation of <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a>, and <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a>
+for details on these methods.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -335,21 +378,30 @@ same type and same name are registered.</p>
 <li><p><strong>required_packages</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the packages which are required to use a subclass of this class</p></li>
 <li><p><strong>required_tikz_libraries</strong> (<em>Collection</em><em>[</em><em>AnyStr</em><em>]</em>) – a collection of the names of the TikZ libraries which are required to use a subclass
 of this class</p></li>
-<li><p><strong>named_objs</strong> (<em>Collection</em><em>[</em><em>TN</em><em>]</em>) – the (at least) <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> objects to be attached to the instance of this class</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesNamed.__register_named_object__">
-<span class="sig-name descname"><span class="pre">__register_named_object__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">named_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesNamed.__register_named_object__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register one or multiple required <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> instances with this instance.</p>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesWriteable.__register_writeable_object__">
+<span class="sig-name descname"><span class="pre">__register_writeable_object__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">writeable_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesWriteable.__register_writeable_object__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register one or multiple <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> instances with this instance.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesNamed.required_named_objects">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_named_objects</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Union[SEPTeX.TikZBase.TikZColor,</span> <span class="pre">SEPTeX.TikZBase.TN]]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesNamed.required_named_objects" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesWriteable.required_writeable_objects">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_writeable_objects</span></span><em class="property"><span class="pre">:</span> <span class="pre">Iterator[SEPTeX.TikZBase._TW]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesWriteable.required_writeable_objects" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the required <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> objects used by this instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZDefinesWriteable.required_named_objects">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">required_named_objects</span></span><em class="property"><span class="pre">:</span> <span class="pre">Iterator[SEPTeX.TikZBase.TikZNamed]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZDefinesWriteable.required_named_objects" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the uniquely-named required <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects used by this instance</p>
@@ -406,7 +458,7 @@ of this class</p></li>
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZColor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rgb'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generate_unique_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZColor</span></code></a> represents an RGB color definition. Each color has a name, either 3 or 4 values and a mode. These
 color instances need to be registered with the TikZPicture instance before they can be used. Multiple colors can share
-the same name but they will be overridden by one another, with the color registered at the most recent time being the
+the same name but they may be overwritten by each another, with the color registered at the most recent time being the
 used version.</p>
 <dl class="simple">
 <dt>The mode can be one of two values:</dt><dd><ul class="simple">
@@ -417,27 +469,24 @@ used version.</p>
 </dl>
 <p>Colors of length 3 represent <code class="docutils literal notranslate"><span class="pre">RED</span></code>, <code class="docutils literal notranslate"><span class="pre">GREEN</span></code> and <code class="docutils literal notranslate"><span class="pre">BLUE</span></code>, while colors with length 4 add an addition <code class="docutils literal notranslate"><span class="pre">ALPHA</span></code>
 channel at the end.</p>
-<p>Comparisons of two colors will compare the names of each color.</p>
 <p>Various arithmetic operations are implemented for this class. The following syntax is used for all binary arithmetic
 operations (the same also applies for the right-handed arithmetic operations, but in reverse):</p>
 <div class="math notranslate nohighlight">
 \[\circ \in \left\{ +, -, *, /, //, \%, ** \right\}\]</div>
 <div class="math notranslate nohighlight">
-\[\begin{split}\text{color} \circ \lambda &amp;:\Longleftrightarrow
-\left( \text{r} \circ \lambda, \text{g} \circ \lambda, \text{b} \circ \lambda[, \text{a} \circ \lambda] \right) \\
-\text{color} \circ (x, y, z[, w]) &amp;:\Longleftrightarrow
-\left( \text{r} \circ x, \text{g} \circ y, \text{b} \circ z[, \text{a} \circ w]\right) \\
-\text{color1} \circ \text{color2} &amp;:\Longleftrightarrow
-\text{color1} \circ \left(\text{r}, \text{g}, \text{b}[, \text{a}]\right)_{\text{color2}}\end{split}\]</div>
+\[ \begin{align}\begin{aligned}\text{color} \circ \lambda &amp;:\Longleftrightarrow
+\left( \text{r} \circ \lambda, \text{g} \circ \lambda, \text{b} \circ \lambda[, \text{a} \circ \lambda] \right)\\\text{color} \circ (x, y, z[, w]) &amp;:\Longleftrightarrow
+\left( \text{r} \circ x, \text{g} \circ y, \text{b} \circ z[, \text{a} \circ w]\right)\\\text{color1} \circ \text{color2} &amp;:\Longleftrightarrow
+\text{color1} \circ \left(\text{r}, \text{g}, \text{b}[, \text{a}]\right)_{\text{color2}}\end{aligned}\end{align} \]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>AnyStr</em>) – the name to register this color instance under</p></li>
-<li><p><strong>value</strong> (<em>COLOR_VALUE</em>) – the <code class="docutils literal notranslate"><span class="pre">RGB[A]</span></code> value of this color</p></li>
+<li><p><strong>value</strong> (<em>ColorTuple</em>) – the <code class="docutils literal notranslate"><span class="pre">RGB[A]</span></code> value of this color</p></li>
 <li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>'rgb'</em><em>, </em><em>'RGB'</em><em>]</em>) – the mode of representing the color</p></li>
 <li><p><strong>generate_unique_name</strong> (<em>bool</em>) – keyword-only argument that indicates whether or not the class should automatically
 try to make colors unique by adding parts of the hash to the end of the name, this exists mainly to make arithmetic
-operations on colors easier to handle</p></li>
+operations on colors easier to handle TODO make this part of TikZNamed by default</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises</dt>
@@ -449,10 +498,20 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.COLOR_VALUE">
-<span class="sig-name descname"><span class="pre">COLOR_VALUE</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.COLOR_VALUE" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.ColorTuple">
+<span class="sig-name descname"><span class="pre">ColorTuple</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.ColorTuple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shorthand for a tuple of either 3 or 4 <code class="xref py py-attr docutils literal notranslate"><span class="pre">T</span></code>.</p>
-<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase.T</span></code>]]</p>
+<p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">SEPTeX.TikZBase._N</span></code>]]</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.raw_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">raw_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.raw_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the raw name, different from <a class="reference internal" href="#SEPTeX.TikZBase.TikZColor.name" title="SEPTeX.TikZBase.TikZColor.name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">name()</span></code></a> since this does not include opacity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -460,7 +519,7 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the name, different from <a class="reference internal" href="#SEPTeX.TikZBase.TikZColor.xcolor_name" title="SEPTeX.TikZBase.TikZColor.xcolor_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xcolor_name()</span></code></a> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> since this does not include opacity</p>
+<dd class="field-odd"><p>a string containing the full name to be used in a TikZ context</p>
 </dd>
 </dl>
 </dd></dl>
@@ -476,11 +535,61 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.xcolor_name">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xcolor_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.xcolor_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.value">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="pre">:</span> <span class="pre">ColorTuple</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.value" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a string containing the <code class="docutils literal notranslate"><span class="pre">xcolor</span></code> name to be used in a LaTeX document, alias for <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code></p>
+<dd class="field-odd"><p>the tuple data of this color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.mode">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.mode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the mode of this color</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.red">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">red</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase._N</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.red" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the red channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.green">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">green</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase._N</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.green" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the green channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.blue">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">blue</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase._N</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.blue" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the blue channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZColor.alpha">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">alpha</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[SEPTeX.TikZBase._N]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZColor.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the alpha channel if present or <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -491,14 +600,14 @@ constraints given by <code class="docutils literal notranslate"><span class="pre
 <dd><p>Adds an alpha channel at opacity <code class="docutils literal notranslate"><span class="pre">value</span></code> to this color.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>SEPTeX.TikZBase.T</em>) – the value of the new alpha channel</p>
+<dd class="field-odd"><p><strong>value</strong> (<em>SEPTeX.TikZBase._N</em>) – the value of the new alpha channel</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the new color with 4 channels, if the color already has 4 channels this function will return the
 original color</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor">SEPTeX.TikZBase.TikZColor</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor">SEPTeX.TikZBase.TikZColor</a>[SEPTeX.TikZBase._N]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,11 +622,21 @@ original color</p>
 original color</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor">SEPTeX.TikZBase.TikZColor</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor">SEPTeX.TikZBase.TikZColor</a>[SEPTeX.TikZBase._N]</p>
 </dd>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</div>
+<div class="section" id="tikzarrowdirection">
+<h2>TikZArrowDirection<a class="headerlink" href="#tikzarrowdirection" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZArrowDirection">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZArrowDirection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZArrowDirection" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZArrowDirection" title="SEPTeX.TikZBase.TikZArrowDirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrowDirection</span></code></a> is an enum which helps to track which direction an arrow of <a class="reference internal" href="#SEPTeX.TikZBase.TikZArrow" title="SEPTeX.TikZBase.TikZArrow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code></a> is
+pointing. It contains the values <code class="docutils literal notranslate"><span class="pre">NONE</span></code>, <code class="docutils literal notranslate"><span class="pre">LEFT</span></code>, <code class="docutils literal notranslate"><span class="pre">RIGHT</span></code>, and <code class="docutils literal notranslate"><span class="pre">BOTH</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -526,9 +645,15 @@ original color</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZArrow">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZArrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZArrow" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZArrow" title="SEPTeX.TikZBase.TikZArrow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code></a> is an enumeration of TikZ arrow head types.</p>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZArrow" title="SEPTeX.TikZBase.TikZArrow"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code></a> is an enumeration of TikZ arrow head types. An arrow enum variable has three values associated
+with it:</p>
 <blockquote>
-<div><dl class="py data">
+<div><ul class="simple">
+<li><p>the name of the type, which only holds internal relevance</p></li>
+<li><p>the TikZ key of the type, which is used in the TikZ source</p></li>
+<li><p>the <a class="reference internal" href="#SEPTeX.TikZBase.TikZArrowDirection" title="SEPTeX.TikZBase.TikZArrowDirection"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrowDirection</span></code></a> of the type, which indicates which way the arrow is pointing</p></li>
+</ul>
+<dl class="py data">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZArrow.LINE">
 <span class="sig-name descname"><span class="pre">LINE</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZArrow.LINE" title="Permalink to this definition">¶</a></dt>
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZArrow.LEFT">
@@ -578,7 +703,7 @@ original color</p>
 <h2>TikZStyle<a class="headerlink" href="#tikzstyle" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZStyle">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rectangle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_entries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bend_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_above</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_below</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loop_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rectangle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dashed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dotted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shorten_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shorten_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZStyle</span></code></a> holds information about what styles to apply to a TikZ object. This class implements a container,
 and the <code class="xref py py-meth docutils literal notranslate"><span class="pre">__getitem__()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__getattr__()</span></code> methods. A style can be accessed in the following ways:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scale_style</span> <span class="o">=</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">x_scale</span><span class="o">=</span><span class="s2">&quot;2cm&quot;</span><span class="p">)</span>
@@ -596,30 +721,39 @@ and the <code class="xref py py-meth docutils literal notranslate"><span class="
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="s2">&quot;draw&quot;</span> <span class="ow">in</span> <span class="n">draw_style</span>
 </pre></div>
 </div>
-<p>One can either iterate over the non-None values of this instance, or call the <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> method:</p>
+<p>One can either iterate over the non-None values of this instance, or call the <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle.to_tikz" title="SEPTeX.TikZBase.TikZStyle.to_tikz"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tikz()</span></code></a> method:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">multiple_style</span> <span class="o">=</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="s2">&quot;1cm&quot;</span><span class="p">,</span> <span class="n">draw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">multiple_style</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 <span class="go">(&#39;width&#39;, &#39;1cm&#39;)</span>
 <span class="go">(&#39;draw&#39;, True)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">multiple_style</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">multiple_style</span><span class="o">.</span><span class="n">to_tikz</span><span class="p">())</span>
 <span class="go">draw, width={1cm}</span>
 </pre></div>
 </div>
 <p>Style objects can be compared using <code class="docutils literal notranslate"><span class="pre">==</span></code> and <code class="docutils literal notranslate"><span class="pre">!=</span></code>, and test equal if and only if they have matching key value
 pairs in <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle.style" title="SEPTeX.TikZBase.TikZStyle.style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">style</span></code></a> (i.e. the values passed to the constructor).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="s2">&quot;2mm&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">!=</span> <span class="n">TikZStyle</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EMPTY_STYLE</span>
+</pre></div>
+</div>
+<p>Style obejcts may also be combined using either <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>, or <code class="docutils literal notranslate"><span class="pre">|</span></code>, which all hold the same meaning. When styles
+are combined, the style obejct on the right will overwrite any overlapping attributes of the style on the left side.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">style1</span> <span class="o">=</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">style2</span> <span class="o">=</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dotted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">style1</span> <span class="o">+</span> <span class="n">style2</span> <span class="o">==</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dotted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">style2</span> <span class="o">&amp;</span> <span class="n">style1</span> <span class="o">==</span> <span class="n">TikZStyle</span><span class="p">(</span><span class="n">dashed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dotted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">style1</span> <span class="o">|</span> <span class="n">style2</span> <span class="o">==</span> <span class="n">style1</span> <span class="o">+</span> <span class="n">style2</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>custom_entries</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>AnyStr</em><em>, </em><em>DICT_VAL</em><em>]</em><em>]</em>) – an optional mapping of any entries not included in the keyword arguments</p>
+<dd class="field-odd"><p><strong>custom_entries</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>AnyStr</em><em>, </em><em>DictVal</em><em>]</em><em>]</em>) – an optional mapping of any entries not included in the keyword arguments</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZStyle.DICT_VAL">
-<span class="sig-name descname"><span class="pre">DICT_VAL</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle.DICT_VAL" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZStyle.DictVal">
+<span class="sig-name descname"><span class="pre">DictVal</span></span><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle.DictVal" title="Permalink to this definition">¶</a></dt>
 <dd><p>The types of a dictionary entry of the styles dictionary.</p>
 <p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">AnyStr</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>]]</p>
 </dd></dl>
@@ -634,7 +768,7 @@ pairs in <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle.style" t
 
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZStyle.style">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict[AnyStr,</span> <span class="pre">DICT_VAL]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle.style" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">Dict[AnyStr,</span> <span class="pre">DictVal]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle.style" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a copy of the styles stored in this instance</p>
@@ -662,6 +796,14 @@ pairs in <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle.style" t
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZStyle.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZStyle.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -670,13 +812,13 @@ pairs in <a class="reference internal" href="#SEPTeX.TikZBase.TikZStyle.style" t
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZPicture">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZPicture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defined_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZPicture" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZPicture" title="SEPTeX.TikZBase.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> represents the standard TikZ <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment. This class aids in registering
-<a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects and writing special composite objects.</p>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZBase.TikZPicture" title="SEPTeX.TikZBase.TikZPicture"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code></a> represents the standard TikZ <code class="docutils literal notranslate"><span class="pre">tikzpicture</span></code> environment. This class aids in writing special
+TikZ objects like <a class="reference internal" href="#SEPTeX.TikZBase.TikZColor" title="SEPTeX.TikZBase.TikZColor"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZColor</span></code></a>, but can also be written to manually.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>When a <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> object is written to this class, its <code class="xref py py-attr docutils literal notranslate"><span class="pre">TikZNamed.definition</span></code> string will be
-directly written to the document without registering it, or checking if the node has been written to this instance
-before. However, when a <a class="reference internal" href="#SEPTeX.TikZBase.TikZDefinesNamed" title="SEPTeX.TikZBase.TikZDefinesNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDefinesNamed</span></code></a> object is written to this class, all the registered
+<p>When a <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> object is written to this class, its <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed.definition" title="SEPTeX.TikZBase.TikZNamed.definition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TikZNamed.definition</span></code></a> string will be
+directly written to the document without registering it, or checking if the object has been written to this instance
+before. However, when a <a class="reference internal" href="#SEPTeX.TikZBase.TikZDefinesWriteable" title="SEPTeX.TikZBase.TikZDefinesWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDefinesWriteable</span></code></a> object is written to this class, all the registered
 <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects will be recursively written and registered, so that they can be reused without
 overwriting the old definitions. If one desires to redefine them anyway, one can write them directly to the
 instance manually or simply rename the objects to cause a new definition to be registered.</p>
@@ -698,20 +840,20 @@ environment, this option is useful if there are manually defined colors in the d
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZPicture.defined_named_objects">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">defined_named_objects</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPTeX.TikZBase.TikZNamed]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZPicture.defined_named_objects" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZPicture.written_named_object_definitions">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">written_named_object_definitions</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPTeX.TikZBase.TikZNamed]</span></em><a class="headerlink" href="#SEPTeX.TikZBase.TikZPicture.written_named_object_definitions" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects which have so far been defined by this environment</p>
+<dd class="field-odd"><p>the <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects which have so far been written and defined by this environment</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZPicture.define_named_object">
-<span class="sig-name descname"><span class="pre">define_named_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZPicture.define_named_object" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZBase.TikZPicture.write_named_object_definition">
+<span class="sig-name descname"><span class="pre">write_named_object_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZBase.TikZPicture.write_named_object_definition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register one or multiple <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objects with this instance. This will define the objects at the
-beginning of the environment.</p>
+beginning of the environment using a special handler.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>obj</strong> (<a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><em>SEPTeX.TikZBase.TikZNamed</em></a>) – the named object or objects to define</p>
@@ -726,20 +868,24 @@ beginning of the environment.</p>
 <p>The following conditions apply to special object types:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string this method will simply write it.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string or <code class="xref py py-class docutils literal notranslate"><span class="pre">TeXHandler</span></code> this method will simply write it.</p></li>
 <li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is a <a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZWriteable</span></code></a> object this method will first register the required packages, then
-the required TikZ libraries, then call the <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method of the object, and finally add <code class="docutils literal notranslate"><span class="pre">;</span></code> to the
+the required TikZ libraries, then call the <code class="docutils literal notranslate"><span class="pre">to_latex</span></code> method of the object, and finally add <code class="docutils literal notranslate"><span class="pre">;</span></code> to the
 end if it is missing.</p>
 <ul>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is also a <a class="reference internal" href="#SEPTeX.TikZBase.TikZDefinesNamed" title="SEPTeX.TikZBase.TikZDefinesNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDefinesNamed</span></code></a> object this method will additionally register all the
-named objects recursively, if it has not been defined with the same type and name in this instance before.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is also a <a class="reference internal" href="#SEPTeX.TikZBase.TikZNamed" title="SEPTeX.TikZBase.TikZNamed"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNamed</span></code></a> objet this method will additionally write its definition to
+the document directly. This is in contrast to how <a class="reference internal" href="#SEPTeX.TikZBase.TikZDefinesWriteable" title="SEPTeX.TikZBase.TikZDefinesWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDefinesWriteable</span></code></a> works, since those
+objects will be defined with this class and then written to a special definition handler.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">s</span></code> is also a <a class="reference internal" href="#SEPTeX.TikZBase.TikZDefinesWriteable" title="SEPTeX.TikZBase.TikZDefinesWriteable"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDefinesWriteable</span></code></a> object this method will additionally register all
+the defined objects recursively, if they do not compare equal to any of the objects which have been
+defined by this class previously. These definitions are written to a special definition handler.</p></li>
 </ul>
 </li>
 </ul>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>s</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><em>SEPTeX.TikZBase.TikZWriteable</em></a><em>, </em><em>AnyStr</em><em>]</em>) – the object to write to the handler</p>
+<dd class="field-odd"><p><strong>s</strong> (<em>Union</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZBase.TikZWriteable" title="SEPTeX.TikZBase.TikZWriteable"><em>SEPTeX.TikZBase.TikZWriteable</em></a><em>, </em><em>AnyStr</em><em>, </em><a class="reference internal" href="TeXBase.html#SEPTeX.TeXBase.TeXHandler" title="SEPTeX.TeXBase.TeXHandler"><em>SEPTeX.TeXBase.TeXHandler</em></a><em>]</em>) – the object to write to the handler</p>
 </dd>
 </dl>
 </dd></dl>

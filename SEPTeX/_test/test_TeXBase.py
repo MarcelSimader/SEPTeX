@@ -71,7 +71,7 @@ class LaTeXDocumentTestCase(unittest.TestCase):
 # noinspection PyTypeChecker
 class TestTeXResource(unittest.TestCase):
 	class TestImplementationResource(TeXResource):
-		def __str__(self) -> str:
+		def to_latex(self) -> str:
 			return ""
 
 	@staticmethod
@@ -179,7 +179,9 @@ class TestTeXResource(unittest.TestCase):
 
 	def test_str(self):
 		self.assertEqual("", str(self.no_reopen))
+		self.assertEqual("", self.no_reopen.to_latex())
 		self.assertEqual("", str(self.reopen))
+		self.assertEqual("", self.reopen.to_latex())
 
 # noinspection PyTypeChecker
 class TestTeXHandler(unittest.TestCase):

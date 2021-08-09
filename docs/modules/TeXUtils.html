@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>TeXUtils &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>TeXUtils &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -101,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
@@ -111,8 +112,9 @@
 <li class="toctree-l1"><a class="reference internal" href="TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -120,7 +122,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzcircle">TikZCircle</a></li>
@@ -207,6 +213,105 @@
 <p><span class="versionmodified added">New in version v0.2.0.</span></p>
 </div>
 <dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.vspace">
+<span class="sig-name descname"><span class="pre">vspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.vspace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a vertical space of length <code class="docutils literal notranslate"><span class="pre">length</span></code> in the document.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.parentheses">
+<span class="sig-name descname"><span class="pre">parentheses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.parentheses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts <code class="docutils literal notranslate"><span class="pre">text</span></code> in parentheses like so: <code class="docutils literal notranslate"><span class="pre">\left(</span> <span class="pre">text</span> <span class="pre">\right)</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.brackets">
+<span class="sig-name descname"><span class="pre">brackets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.brackets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts <code class="docutils literal notranslate"><span class="pre">text</span></code> in brackets like so: <code class="docutils literal notranslate"><span class="pre">\left[</span> <span class="pre">text</span> <span class="pre">\right]</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.braces">
+<span class="sig-name descname"><span class="pre">braces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.braces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Puts <code class="docutils literal notranslate"><span class="pre">text</span></code> in braces like so: <code class="docutils literal notranslate"><span class="pre">\left\{</span> <span class="pre">text</span> <span class="pre">\right\}</span></code>.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.matrix">
+<span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a nested sequence of any object to a math-mode compatible matrix. The sequence may not be empty and all nested
+sequences must be of equal length.</p>
+<p>The available options are <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;p&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code> for <code class="docutils literal notranslate"><span class="pre">matrix</span></code>, <code class="docutils literal notranslate"><span class="pre">pmatrix</span></code> (parentheses),
+<code class="docutils literal notranslate"><span class="pre">bmatrix</span></code> (brackets), and <code class="docutils literal notranslate"><span class="pre">Bmatrix</span></code> (braces, requires <code class="docutils literal notranslate"><span class="pre">amsmath</span></code>) respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matr</strong> (<em>Sequence</em><em>[</em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – the nested sequence to convert to a matrix string</p></li>
+<li><p><strong>matrix_type</strong> (<em>Literal</em><em>[</em><em>, </em><em>p</em><em>, </em><em>b</em><em>, </em><em>B</em><em>]</em>) – which kind of matrix to create, either <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;p&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;b&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code></p></li>
+<li><p><strong>labels</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>Any</em><em>]</em><em>]</em>) – an optional sequence of strings to label both the top row and first column, <strong>can only be used for
+square matrices</strong> and must be of equal length to the first and second dimensions</p></li>
+<li><p><strong>tab_width</strong> (<em>int</em>) – how wide a tab character should be considered to be in characters for formatting the string output</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if <code class="docutils literal notranslate"><span class="pre">matr</span></code> contains no elements, if nested sequences of <code class="docutils literal notranslate"><span class="pre">matr</span></code> are not all the same size, if
+the <code class="docutils literal notranslate"><span class="pre">labels</span></code> option is set for non-square matrices, if the <code class="docutils literal notranslate"><span class="pre">labels</span></code> sequence is not the same size as the first
+and second dimensions of <code class="docutils literal notranslate"><span class="pre">matr</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the nested sequence as math-mode compatible matrix in string form</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.p_matrix">
+<span class="sig-name descname"><span class="pre">p_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.p_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parentheses alias for specifying a matrix type.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Function <a class="reference internal" href="#SEPTeX.TeXUtils.matrix" title="SEPTeX.TeXUtils.matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">matrix()</span></code></a> for details</p>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.b_matrix">
+<span class="sig-name descname"><span class="pre">b_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.b_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brackets alias for specifying a matrix type.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Function <a class="reference internal" href="#SEPTeX.TeXUtils.matrix" title="SEPTeX.TeXUtils.matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">matrix()</span></code></a> for details</p>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="SEPTeX.TeXUtils.B_matrix">
+<span class="sig-name descname"><span class="pre">B_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tab_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.B_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Braces alias for specifying a matrix type.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Function <a class="reference internal" href="#SEPTeX.TeXUtils.matrix" title="SEPTeX.TeXUtils.matrix"><code class="xref py py-func docutils literal notranslate"><span class="pre">matrix()</span></code></a> for details</p>
+</div>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="SEPTeX.TeXUtils.tex_maths_string">
 <span class="sig-name descname"><span class="pre">tex_maths_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXUtils.tex_maths_string" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
@@ -218,8 +323,8 @@
 <col style="width: 79%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Supertype</p></th>
-<th class="head"><p>Behaviour</p></th>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">cls</span></code></p></th>
+<th class="head"><p>Behaviour if <code class="docutils literal notranslate"><span class="pre">isinstance(s,</span> <span class="pre">cls)</span></code></p></th>
 </tr>
 </thead>
 <tbody>

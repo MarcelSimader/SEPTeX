@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Index &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>Index &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -99,6 +99,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#center">Center</a></li>
@@ -109,8 +110,9 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -118,7 +120,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzcircle">TikZCircle</a></li>
@@ -211,6 +217,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
  | <a href="#X"><strong>X</strong></a>
  | <a href="#Y"><strong>Y</strong></a>
@@ -219,11 +226,9 @@
 <h2 id="_">_</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.__eq__">__eq__() (TikZNamed method)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.__eq__">__eq__() (TikZWriteable method)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.__hash__">__hash__() (TikZNamed method)</a>
-</li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesNamed.__register_named_object__">__register_named_object__() (TikZDefinesNamed method)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.__hash__">__hash__() (TikZWriteable method)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.__register_required_package__">__register_required_package__() (TikZWriteable method)</a>
 </li>
@@ -231,6 +236,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesWriteable.__register_writeable_object__">__register_writeable_object__() (TikZDefinesWriteable method)</a>
+</li>
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXResource.__require_closed__">__require_closed__() (TeXResource method)</a>
 </li>
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXResource.__require_open__">__require_open__() (TeXResource method)</a>
@@ -239,12 +246,6 @@
 </li>
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXResource.__require_virgin__">__require_virgin__() (TeXResource method)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.__str__">__str__() (TikZNamed method)</a>
-
-      <ul>
-        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.__str__">(TikZWriteable method)</a>
-</li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -255,29 +256,61 @@
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.ALMOST_BLACK">ALMOST_BLACK (in module SEPTeX.TikZBase)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.ALMOST_WHITE">ALMOST_WHITE (in module SEPTeX.TikZBase)</a>
 </li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.alpha">alpha (TikZColor property)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.angle">angle (Point property)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.angle">(PolarPoint property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZDirectedPath.arrow_type">arrow_type (TikZDirectedPath property)</a>
 
       <ul>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.arrow_type">(TikZPath property)</a>
 </li>
       </ul></li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.as_float">as_float() (Point method)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.as_float">(PolarPoint method)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.as_int">as_int() (Point method)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.as_int">(PolarPoint method)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.author">author (LaTeXDocument property)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.B_matrix">B_matrix() (in module SEPTeX.TeXUtils)</a>
+</li>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.b_matrix">b_matrix() (in module SEPTeX.TeXUtils)</a>
+</li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.begin_text">begin_text (LaTeXEnvironment property)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.BLACK">BLACK (in module SEPTeX.TikZBase)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.BLACK">BLACK (in module SEPTeX.TikZBase)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.blue">blue (TikZColor property)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.body">body (LaTeXDocument property)</a>
+</li>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.braces">braces() (in module SEPTeX.TeXUtils)</a>
+</li>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.brackets">brackets() (in module SEPTeX.TeXUtils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -289,18 +322,20 @@
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.Center">Center (class in SEPTeX.LaTeX)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.COLOR_VALUE">COLOR_VALUE (TikZColor attribute)</a>
-</li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.colors">colors (TikZStyle property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.coordinate">coordinate (TikZCircle property)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.ColorTuple">ColorTuple (TikZColor attribute)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.coordinate">coordinate (Point property)</a>
 
       <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.coordinate">(TikZCircle property)</a>
+</li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.coordinate">(TikZNode property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.coordinates">coordinates (TikZPath property)</a>
 </li>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.coordinates_string">coordinates_string (TikZPath property)</a>
@@ -319,23 +354,25 @@
 </li>
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXHandler.data">data (TeXHandler property)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZPicture.define_named_object">define_named_object() (TikZPicture method)</a>
-</li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZPicture.defined_named_objects">defined_named_objects (TikZPicture property)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.definition">definition (TikZColor property)</a>
 
       <ul>
+        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.definition">(TikZNamed property)</a>
+</li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.definition">(TikZNode property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.definitions">definitions (LaTeXDocument property)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.DICT_VAL">DICT_VAL (TikZStyle attribute)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.DictVal">DictVal (TikZStyle attribute)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.document">document (LaTeXEnvironment property)</a>
+</li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.document_class">document_class (LaTeXDocument property)</a>
+</li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.document_options">document_options (LaTeXDocument property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -345,9 +382,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.empty">empty (TikZStyle property)</a>
 </li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.encoding">encoding (LaTeXDocument property)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.end_text">end_text (LaTeXEnvironment property)</a>
+</li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.environment_name">environment_name (LaTeXEnvironment property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -358,12 +399,22 @@
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.Figure">Figure (class in SEPTeX.LaTeX)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.find_node_relations">find_node_relations() (TikZPath static method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.geometric_length">geometric_length() (Point method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.GREEN">GREEN (in module SEPTeX.TikZBase)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.green">green (TikZColor property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -382,6 +433,8 @@
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.Figure.label">label (Figure property)</a>
 
       <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZLabel.label">(TikZLabel property)</a>
+</li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.label">(TikZNode property)</a>
 </li>
       </ul></li>
@@ -391,6 +444,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXResource">LaTeXResource (class in SEPTeX.LaTeX)</a>
+</li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.LIGHT_BLUE">LIGHT_BLUE (in module SEPTeX.TikZBase)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.LIGHT_GRAY">LIGHT_GRAY (in module SEPTeX.TikZBase)</a>
@@ -410,6 +465,10 @@
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.MAGENTA">MAGENTA (in module SEPTeX.TikZBase)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.MathsEnvironment">MathsEnvironment (class in SEPTeX.LaTeX)</a>
+</li>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.matrix">matrix() (in module SEPTeX.TeXUtils)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.mode">mode (TikZColor property)</a>
 </li>
       <li>
     module
@@ -435,6 +494,8 @@
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.name">name (TikZColor property)</a>
 
       <ul>
+        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.name">(TikZNamed property)</a>
+</li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.name">(TikZNode property)</a>
 </li>
       </ul></li>
@@ -448,6 +509,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.node_relations">node_relations (TikZPath property)</a>
+</li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.normalize_key">normalize_key() (TikZStyle static method)</a>
 </li>
   </ul></td>
@@ -460,6 +523,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.options">options (LaTeXEnvironment property)</a>
+</li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.ORANGE">ORANGE (in module SEPTeX.TikZBase)</a>
 </li>
   </ul></td>
@@ -468,17 +533,35 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.p_matrix">p_matrix() (in module SEPTeX.TeXUtils)</a>
+</li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.page_break">page_break() (LaTeXDocument method)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.parent_env">parent_env (LaTeXEnvironment property)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.parent_handler">parent_handler (LaTeXEnvironment property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.parentheses">parentheses() (in module SEPTeX.TeXUtils)</a>
+</li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.path">path (LaTeXDocument property)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.PINK">PINK (in module SEPTeX.TikZBase)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point">Point (class in SEPTeX.TikZ)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.point">point (Point property)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.POINT_TEMPLATE">POINT_TEMPLATE (Point attribute)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.POINT_TEMPLATE">(PolarPoint attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.polar_coordinate">polar_coordinate (Point property)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint">PolarPoint (class in SEPTeX.TikZ)</a>
 </li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.preamble">preamble (LaTeXDocument property)</a>
 </li>
@@ -490,19 +573,43 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.radius">radius (TikZCircle property)</a>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.radius">radius (Point property)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.radius">(PolarPoint property)</a>
 </li>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.radius">(TikZCircle property)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.raw_coordinate">raw_coordinate (TikZNode property)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.raw_name">raw_name (TikZColor property)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.raw_name">(TikZNode property)</a>
+</li>
+      </ul></li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.RED">RED (in module SEPTeX.TikZBase)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.remove_alpha">remove_alpha() (TikZColor method)</a>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.red">red (TikZColor property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesNamed.required_named_objects">required_named_objects (TikZDefinesNamed property)</a>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.relative">relative (Point property)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.relative_to">relative_to (TikZNode property)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.RelPoint">RelPoint (class in SEPTeX.TikZ)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.remove_alpha">remove_alpha() (TikZColor method)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesWriteable.required_named_objects">required_named_objects (TikZDefinesWriteable property)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.required_packages">required_packages (TikZWriteable property)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.required_tikz_libraries">required_tikz_libraries (TikZWriteable property)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesWriteable.required_writeable_objects">required_writeable_objects (TikZDefinesWriteable property)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.ROSE">ROSE (in module SEPTeX.TikZBase)</a>
 </li>
@@ -540,8 +647,6 @@
         <li><a href="modules/TikZ.html#module-SEPTeX.TikZ">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     SEPTeX.TikZBase
 
@@ -549,9 +654,17 @@
         <li><a href="modules/TikZBase.html#module-SEPTeX.TikZBase">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.show_date">show_date (LaTeXDocument property)</a>
+</li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.show_page_numbers">show_page_numbers (LaTeXDocument property)</a>
+</li>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.style">style (TikZCircle property)</a>
 
       <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZLabel.style">(TikZLabel property)</a>
+</li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZNode.style">(TikZNode property)</a>
 </li>
         <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.style">(TikZPath property)</a>
@@ -559,6 +672,8 @@
         <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.style">(TikZStyle property)</a>
 </li>
       </ul></li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.subtitle">subtitle (LaTeXDocument property)</a>
+</li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.successfully_saved_tex">successfully_saved_tex (LaTeXDocument property)</a>
 </li>
   </ul></td>
@@ -574,8 +689,6 @@
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXHandler">TeXHandler (class in SEPTeX.TeXBase)</a>
 </li>
       <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXResource">TeXResource (class in SEPTeX.TeXBase)</a>
-</li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TIKZ_VALUE">TIKZ_VALUE (in module SEPTeX.TikZBase)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrow">TikZArrow (class in SEPTeX.TikZBase)</a>
 </li>
@@ -603,8 +716,6 @@
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrow.LEFT_RIGHT_STUMP">TikZArrow.LEFT_RIGHT_STUMP (in module SEPTeX.TikZBase)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrow.LEFT_STUMP">TikZArrow.LEFT_STUMP (in module SEPTeX.TikZBase)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrow.LINE">TikZArrow.LINE (in module SEPTeX.TikZBase)</a>
@@ -619,13 +730,19 @@
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrow.RIGHT_STUMP">TikZArrow.RIGHT_STUMP (in module SEPTeX.TikZBase)</a>
 </li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZArrowDirection">TikZArrowDirection (class in SEPTeX.TikZBase)</a>
+</li>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle">TikZCircle (class in SEPTeX.TikZ)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor">TikZColor (class in SEPTeX.TikZBase)</a>
 </li>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesNamed">TikZDefinesNamed (class in SEPTeX.TikZBase)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZDefinesWriteable">TikZDefinesWriteable (class in SEPTeX.TikZBase)</a>
 </li>
       <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZDirectedPath">TikZDirectedPath (class in SEPTeX.TikZ)</a>
+</li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZLabel">TikZLabel (class in SEPTeX.TikZ)</a>
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed">TikZNamed (class in SEPTeX.TikZBase)</a>
 </li>
@@ -639,21 +756,73 @@
 </li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle">TikZStyle (class in SEPTeX.TikZBase)</a>
 </li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZValue">TikZValue (in module SEPTeX.TikZBase)</a>
+</li>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable">TikZWriteable (class in SEPTeX.TikZBase)</a>
 </li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.title">title (LaTeXDocument property)</a>
+</li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.to_latex">to_latex() (LaTeXDocument method)</a>
+
+      <ul>
+        <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXEnvironment.to_latex">(LaTeXEnvironment method)</a>
+</li>
+        <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXResource.to_latex">(LaTeXResource method)</a>
+</li>
+      </ul></li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.to_pdf">to_pdf() (LaTeXDocument method)</a>
 </li>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXResource.to_tex">to_tex() (LaTeXResource method)</a>
+
+      <ul>
+        <li><a href="modules/TeXBase.html#SEPTeX.TeXBase.TeXResource.to_tex">(TeXResource method)</a>
+</li>
+      </ul></li>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.to_tikz">to_tikz() (Point method)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.to_tikz">(PolarPoint method)</a>
+</li>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZCircle.to_tikz">(TikZCircle method)</a>
+</li>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZDirectedPath.to_tikz">(TikZDirectedPath method)</a>
+</li>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZLabel.to_tikz">(TikZLabel method)</a>
+</li>
+        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZNamed.to_tikz">(TikZNamed method)</a>
+</li>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.TikZPath.to_tikz">(TikZPath method)</a>
+</li>
+        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZStyle.to_tikz">(TikZStyle method)</a>
+</li>
+        <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZWriteable.to_tikz">(TikZWriteable method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.use_package">use_package() (LaTeXDocument method)</a>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.unit">unit (Point property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.use_package">use_package() (LaTeXDocument method)</a>
+</li>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.LaTeXDocument.use_tikz_library">use_tikz_library() (LaTeXDocument method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.value">value (TikZColor property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TeXUtils.html#SEPTeX.TeXUtils.vspace">vspace() (in module SEPTeX.TeXUtils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -679,19 +848,35 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/LaTeX.html#SEPTeX.LaTeX.Figure.write_figure_table">write_figure_table() (Figure method)</a>
 </li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZPicture.write_named_object_definition">write_named_object_definition() (TikZPicture method)</a>
+</li>
+      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZPicture.written_named_object_definitions">written_named_object_definitions (TikZPicture property)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.TikZColor.xcolor_name">xcolor_name (TikZColor property)</a>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.x">x (Point property)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.x">(PolarPoint property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="Y">Y</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/TikZ.html#SEPTeX.TikZ.Point.y">y (Point property)</a>
+
+      <ul>
+        <li><a href="modules/TikZ.html#SEPTeX.TikZ.PolarPoint.y">(PolarPoint property)</a>
+</li>
+      </ul></li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="modules/TikZBase.html#SEPTeX.TikZBase.YELLOW">YELLOW (in module SEPTeX.TikZBase)</a>
 </li>

@@ -6,10 +6,34 @@ TikZ
 
 ..  automodule:: SEPTeX.TikZ
 
+Point
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.TikZ.Point
+	:members:
+
+PolarPoint
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.TikZ.PolarPoint
+	:members:
+
+RelPoint
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.TikZ.RelPoint
+	:members:
+
 TikZNode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ..	autoclass:: SEPTeX.TikZ.TikZNode
+	:members:
+
+TikZLabel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.TikZ.TikZLabel
 	:members:
 
 TikZPath

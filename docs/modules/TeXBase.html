@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>TeXBase &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>TeXBase &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -101,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
@@ -111,8 +112,9 @@
 <li class="toctree-l1"><a class="reference internal" href="TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -120,7 +122,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZ.html#tikzcircle">TikZCircle</a></li>
@@ -315,8 +321,8 @@ of this instance to the tabs already accumulated in the data tuple of the given 
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource">
 <em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TeXResource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">can_reopen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class for marking a class as having an open and closed state, along with text data of some sort. This
-class requires <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code> to be implemented to provide the contents of the handlers to any other caller.</p>
+<dd><p>Abstract base class for marking a class as having an open and closed state, along with TeX text data of some sort.
+This class requires <a class="reference internal" href="#SEPTeX.TeXBase.TeXResource.to_tex" title="SEPTeX.TeXBase.TeXResource.to_tex"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tex()</span></code></a> to be implemented to provide the contents of the handlers to any other caller.</p>
 <p>In addition to the open and closed states, one can configure the resource to allow multiple openings. The default
 behaviour is to throw an exception if the resource is opened a second time. The opening and closing is implemented as
 context manager, with <code class="xref py py-meth docutils literal notranslate"><span class="pre">__enter__()</span></code> triggering an opening and <code class="xref py py-meth docutils literal notranslate"><span class="pre">__exit__()</span></code> triggering a closing. The
@@ -396,6 +402,14 @@ represents the public API call which caused the error</p>
 <dd class="field-even"><p><strong>LaTeXError</strong> – if the resource has not been opened and closed at least once in the past when this function is
 called</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TeXBase.TeXResource.to_tex">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">to_tex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TeXBase.TeXResource.to_tex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TeX string.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 

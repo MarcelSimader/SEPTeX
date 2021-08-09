@@ -16,7 +16,9 @@ import os
 import shutil
 from os import PathLike
 from subprocess import run
-from typing import Union, AnyStr, Tuple, List, Final, Collection, final, Literal, Any, Optional
+from typing import Union, AnyStr, Tuple, List, Final, Collection, final, Literal, Any, Optional, ClassVar
+
+import abc
 
 from SEPTeX.TeXBase import TeXResource, TeXHandler, TeXError
 from SEPTeX.TeXUtils import tex_maths_string
@@ -25,18 +27,36 @@ from SEPTeX.TeXUtils import tex_maths_string
 # ~~~~~~~~~~~~~~~ DOCUMENT AND ENVIRONMENTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class LaTeXDocument(TeXResource):
+class LaTeXResource(TeXResource, abc.ABC):
+	"""
+	An abstract base class for the LaTeX extension of :py:class:`TeXResource`. This class requires :py:meth:`to_latex`
+	to be implemented, and maps the methods :py:meth:`__str__`, and :py:meth:`to_tex` to this method.
+	"""
+
+	@abc.abstractmethod
+	def to_latex(self) -> str:
+		""" Converts this object to a LaTeX string. """
+		raise NotImplementedError("Subclasses of LaTeXResource must implement this method")
+
+	def to_tex(self) -> str:
+		return self.to_latex()
+
+	@final
+	def __str__(self):
+		return self.to_tex()
+
+class LaTeXDocument(LaTeXResource):
 	"""
 	:py:class:`LaTeXDocument` represents a LaTeX document that can be written to in a similar fashion as a text file. To
-	do so, one must use the context manager of this object or retrieve the file path to write to it directly. The context
-	manager will return three objects: the created document itself, the handler for writing to the preamble, and the
-	handler for writing to the body of the document.
+	do so, one must use the context manager of this object, or retrieve the file path to write to it directly. The context
+	manager will return the document object itself, which contains the ``preamble`` and ``body`` handler for writing to
+	the document.
 
-	Example usage with the context manager: ::
+	Example usage of the context manager: ::
 
-		with LaTeXDocument("abc.tex") as (latex_document, pre, body):
+		with LaTeXDocument("abc.tex") as latex_document:
 			latex_document.use_package("abc123", "cde456")
-			body.write(r"This is some \LaTeX.")
+			latex_document.body.write(r"This is some \LaTeX.")
 
 	For extensions to the functionality of this class, see :py:class:`LaTeXEnvironment` as base class.
 
@@ -56,11 +76,11 @@ class LaTeXDocument(TeXResource):
 	:param show_page_numbers: keyword-only argument, determines whether or not to show page numbers on all pages
 	:param line_wrap_length: keyword-only argument, if set to an int this value will dictate how long a line can be
 		before a pseudo soft-wrap is applied (see :py:class:`LaTeXHandler` for details)
-
+	:param encoding: the string specifying how to encode the bytes of text stored in this instance, defaults to ``utf-8``
 	"""
 
 	# cleandoc to remove leading whitespace of multiline string literal
-	LaTeXTemplate: Final = inspect.cleandoc(
+	LaTeXTemplate: ClassVar[str] = inspect.cleandoc(
 			r"""
 			\documentclass[{}]{{{}}}
 			
@@ -90,14 +110,15 @@ class LaTeXDocument(TeXResource):
 				 path: Union[AnyStr, PathLike],
 				 document_class: AnyStr = "article",
 				 document_options: AnyStr = "a4paper, 12pt",
-				 default_packages: Collection[AnyStr] = ("amsmath",),
+				 default_packages: Collection[AnyStr] = (),
 				 title: Optional[AnyStr] = None,
 				 subtitle: Optional[AnyStr] = None,
 				 author: Optional[AnyStr] = None,
 				 *,
 				 show_date: bool = False,
 				 show_page_numbers: bool = False,
-				 line_wrap_length: Optional[int] = None):
+				 line_wrap_length: Optional[int] = None,
+				 encoding: str = "utf-8"):
 		super(LaTeXDocument, self).__init__()
 
 		self._path = path
@@ -108,6 +129,7 @@ class LaTeXDocument(TeXResource):
 		self._author = author
 		self._show_date = show_date
 		self._show_page_numbers = show_page_numbers
+		self._encoding = encoding
 
 		# set up handlers
 		self._definitions = TeXHandler(indent_level=0)
@@ -147,10 +169,12 @@ class LaTeXDocument(TeXResource):
 
 	@property
 	def document_class(self) -> AnyStr:
+		""" :return: the document class """
 		return self._document_class
 
 	@property
 	def document_options(self) -> AnyStr:
+		""" :return: the options passed to the document class """
 		return self._document_options
 
 	@property
@@ -168,23 +192,33 @@ class LaTeXDocument(TeXResource):
 
 	@property
 	def title(self) -> Optional[AnyStr]:
+		""" :return: the title of this document """
 		return self._title
 
 	@property
 	def subtitle(self) -> Optional[AnyStr]:
+		""" :return: the subtitle of this document """
 		return self._subtitle
 
 	@property
 	def author(self) -> Optional[AnyStr]:
+		""" :return: the author of this document """
 		return self._author
 
 	@property
 	def show_date(self) -> bool:
+		""" :return: whether or not the title shows date of creation """
 		return self._show_date
 
 	@property
 	def show_page_numbers(self) -> bool:
+		""" :return: whether or not the document has page numbers """
 		return self._show_page_numbers
+
+	@property
+	def encoding(self):
+		""" :return: the text encoding used by this document """
+		return self._encoding
 
 	def __fspath__(self) -> bytes:
 		return str(self.path).encode("utf_8")
@@ -197,8 +231,6 @@ class LaTeXDocument(TeXResource):
 		:param s: the name or names of the definitions to include
 		:param definition_text: the text to use for the definition statement
 		"""
-		if not isinstance(s, Tuple):
-			s = (s,)
 		for p in s:
 			if (definition_text, p) not in self._definition_list:
 				self._definition_list.append((definition_text, p))
@@ -216,10 +248,11 @@ class LaTeXDocument(TeXResource):
 	def use_tikz_library(self, *library: AnyStr) -> None:
 		"""
 		Include a ``usetikzlibrary`` statement in this document. This function checks the list of already included libraries
-		to avoid duplicates.
+		to avoid duplicates. This function implicitly includes the TikZ package.
 
 		:param library: the name or names of the TikZ library to include
 		"""
+		self.use_package("tikz")
 		self.__inclusion_statement__(*library, definition_text="usetikzlibrary")
 
 	def page_break(self) -> None:
@@ -227,7 +260,7 @@ class LaTeXDocument(TeXResource):
 		self.body.write(r"\newpage")
 		self.body.newline()
 
-	def __init_document__(self):
+	def __init_document__(self) -> None:
 		"""
 		This function should be called when the context manager of a document is entered or if the super call of a subclass
 		has skipped this class in the inheritance chain. It sets up basic things like the page numbering and titles.
@@ -251,38 +284,34 @@ class LaTeXDocument(TeXResource):
 		if not self._show_page_numbers:
 			self._preamble.write(r"\pagenumbering{gobble}")
 
-	def __enter__(self) -> Tuple[LaTeXDocument, TeXHandler, TeXHandler]:
+	def __enter__(self) -> LaTeXDocument:
 		super(LaTeXDocument, self).__enter__()
 		self.__init_document__()
-		return self, self._preamble, self._body
+		return self
 
 	def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
-		# super call!
-		_exit = super(LaTeXDocument, self).__exit__
-
-		# if error, do not write document
-		if exc_val is not None:
-			return _exit(exc_type, exc_val, exc_tb)
-
-		# no error, try to write file
-		file = None
-		try:
-			# write to actual file
-			file = open(self.path, "w")
-			file.write(str(self))
-		except (TeXError, OSError, IOError) as e:
-			raise TeXError(f"Error while writing to '.tex' file", self) from e
-		finally:
-			if file is not None:
-				file.close()
-			return _exit(exc_type, exc_val, exc_tb)
+		# if no error write document
+		if exc_val is None:
+			file = None
+			try:
+				# make folder if not already there
+				os.makedirs(os.path.dirname(self.path), exist_ok=True)
+				# write bytes to actual file
+				file = open(self.path, "wb")
+				file.write(self.to_latex().encode(self._encoding))
+			except (TeXError, OSError, IOError, UnicodeEncodeError) as e:
+				raise TeXError(f"Error while writing to '.tex' file", self) from e
+			finally:
+				if file is not None:
+					file.close()
+		return super(LaTeXDocument, self).__exit__(exc_type, exc_val, exc_tb)
 
 	def to_pdf(self,
 			   out_file_path: Union[PathLike, AnyStr],
 			   overwrite: bool = False,
 			   delete_aux_files: bool = True,
 			   engine: Literal["pdftex", "pdflatex"] = "pdflatex",
-			   custom_options: AnyStr = "") -> None:
+			   *custom_options: AnyStr) -> None:
 		"""
 		Compile the LaTeX document at :py:attr:`path` to a PDF file. The document must be closed before attempting to perform
 		this operation.
@@ -323,7 +352,8 @@ class LaTeXDocument(TeXResource):
 						 "-job-name", out_file,
 						 "-output-directory", out_dir,
 						 "-aux-directory", out_aux_dir,
-						 "-halt-on-error", "-enable-installer", custom_options),
+						 "-halt-on-error", "-enable-installer",
+						 *custom_options),
 						cwd=os.path.dirname(self.path),
 						shell=False,
 						)
@@ -341,14 +371,13 @@ class LaTeXDocument(TeXResource):
 			if delete_aux_files:
 				shutil.rmtree(out_aux_dir)
 
-	def __str__(self) -> str:
+	def to_latex(self) -> str:
 		return self.LaTeXTemplate.format(
 				self._document_options,
 				self._document_class,
 				str(self._definitions),
 				str(self._preamble),
-				str(self._body)
-				)
+				str(self._body))
 
 	def __repr__(self) -> str:
 		try:
@@ -363,13 +392,13 @@ class LaTeXDocument(TeXResource):
 			   f"open={self._open}, " \
 			   f"successfully_saved_tex={self.successfully_saved_tex})"
 
-class LaTeXEnvironment(TeXResource):
+class LaTeXEnvironment(LaTeXResource):
 	r"""
 	Base class for an environment in a LaTeX document (see :py:class:`LaTeXDocument`). This class usually acts as base
-	class for extensions that add simpler ways to write to an environment, but it can also be used directly if an environment
+	class for extensions that add simpler ways to write to an environment but it can also be used directly, if an environment
 	that is not necessarily worth implementing is desired.
 
-	Example usage with two nested context managers: ::
+	Example usage of this class with two nested context managers: ::
 
 		...
 		with LaTeXEnvironment(document, "center") as env_center:
@@ -392,8 +421,8 @@ class LaTeXEnvironment(TeXResource):
 	:param indent_level: the number of tab characters to indent this environment relative to the parent environment
 	"""
 
-	BEGIN_TEMPLATE: Final = r"\begin{{{}}}{}"
-	END_TEMPLATE: Final = r"\end{{{}}}"
+	BEGIN_TEMPLATE: ClassVar[str] = r"\begin{{{}}}{}"
+	END_TEMPLATE: ClassVar[str] = r"\end{{{}}}"
 
 	def __init__(self,
 				 parent_env: Union[LaTeXDocument, LaTeXEnvironment],
@@ -457,20 +486,22 @@ class LaTeXEnvironment(TeXResource):
 	@final
 	@property
 	def environment_name(self) -> AnyStr:
+		""" :return: the name of this environment """
 		return self._environment_name
 
 	@property
 	def options(self) -> AnyStr:
+		""" :return: the options passed to this environment """
 		return self._options
 
 	@property
 	def begin_text(self) -> str:
-		""" :return: the definition text to open this environment in the TeX source """
+		""" :return: the definition text to open this environment in the LaTeX source """
 		return self.BEGIN_TEMPLATE.format(self._environment_name, self._options)
 
 	@property
 	def end_text(self) -> str:
-		""" :return: the definition text to close this environment in the TeX source """
+		""" :return: the definition text to close this environment in the LaTeX source """
 		return self.END_TEMPLATE.format(self._environment_name)
 
 	def __enter__(self) -> LaTeXEnvironment:
@@ -484,16 +515,16 @@ class LaTeXEnvironment(TeXResource):
 
 	def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
 		self.parent_env.__require_open__()
-		try:
-			# write handler data to parent env
-			self.parent_handler.write(self._handler)
-			# write end to parent env
-			self.parent_handler.write(self.end_text)
-			self.parent_handler.newline()
-		finally:
-			return super(LaTeXEnvironment, self).__exit__(exc_type, exc_val, exc_tb)
 
-	def write(self, s: AnyStr) -> None:
+		# write handler data to parent env
+		self.parent_handler.write(self._handler)
+		# write end to parent env
+		self.parent_handler.write(self.end_text)
+		self.parent_handler.newline()
+
+		return super(LaTeXEnvironment, self).__exit__(exc_type, exc_val, exc_tb)
+
+	def write(self, s: Union[AnyStr, TeXHandler]) -> None:
 		"""
 		Shorthand for writing to the handler of this instance.
 
@@ -510,16 +541,18 @@ class LaTeXEnvironment(TeXResource):
 		self._newline()
 
 	@final
-	def _write(self, s: AnyStr) -> None:
+	def _write(self, s: Union[AnyStr, TeXHandler]) -> None:
+		""" Internal write method. Do not overwrite. """
 		self.__require_open__(frame_depth=2)
 		self._handler.write(s)
 
 	@final
 	def _newline(self) -> None:
+		""" Internal newline method. Do not overwrite. """
 		self.__require_open__(frame_depth=2)
 		self._handler.newline()
 
-	def __str__(self) -> str:
+	def to_latex(self) -> str:
 		return f"{self.begin_text}\n{str(self._handler)}\n{self.end_text}"
 
 	def __repr__(self) -> str:
@@ -558,7 +591,7 @@ class Figure(LaTeXEnvironment):
 	When referencing this figure, use the :py:attr:`label` property as follows, as it adds the ``fig:`` prefix
 	automatically when left out and makes referencing easier and less error-prone: ::
 
-		with LaTeXDocument("ham.tex") as (doc, _, _):
+		with LaTeXDocument("ham.tex") as doc:
 			f1 = Figure(doc, "Caption.", "a-label")
 			assert f1.label == "fig:a-label"
 
