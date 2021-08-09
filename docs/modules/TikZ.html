@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>TikZ &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>TikZ &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -36,6 +36,7 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -66,7 +67,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -100,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="LaTeX.html#center">Center</a></li>
@@ -110,8 +112,9 @@
 <li class="toctree-l1"><a class="reference internal" href="TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -119,7 +122,11 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tikzcircle">TikZCircle</a></li>
@@ -205,6 +212,299 @@
 <div class="versionadded">
 <p><span class="versionmodified added">New in version v0.1.0.</span></p>
 </div>
+<div class="section" id="point">
+<h2>Point<a class="headerlink" href="#point" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">Point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> represented a 2 dimensional coordinate of form <span class="math notranslate nohighlight">\((x, y)\)</span>. The class additionally holds information
+on the unit used for both of the values. Various arithmetic operations upon two points are supported, but only if they
+<strong>share the same unit</strong>.</p>
+<p>To perform the vector dot product on two points, use the “matrix-mul” operator <code class="docutils literal notranslate"><span class="pre">&#64;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>_N0</em>) – the x-coordinate</p></li>
+<li><p><strong>y</strong> (<em>_N1</em>) – the y-coordinate</p></li>
+<li><p><strong>unit</strong> (<em>AnyStr</em>) – keyword-only argument, denotes the unit to suffix at the end of the <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> instance, is
+<strong>automatically converted to all lower case</strong>, for instance <code class="docutils literal notranslate"><span class="pre">Point(3,</span> <span class="pre">4,</span> <span class="pre">unit=&quot;CM&quot;)</span></code> will produce the output
+<code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">3.000cm,</span>&#160; <span class="pre">4.000cm)</span></code></p></li>
+<li><p><strong>relative</strong> (<em>bool</em>) – whether or not this coordinate should be considered relative in the used path or not</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.POINT_TEMPLATE">
+<span class="sig-name descname"><span class="pre">POINT_TEMPLATE</span></span><em class="property"><span class="pre">:</span> <span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">'{}({:</span> <span class="pre">.7f}{unit},</span> <span class="pre">{:</span> <span class="pre">.7f}{unit})'</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.POINT_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format string to use when formatting a coordinate to a string.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.x">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ._N0</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.x" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the x coordinate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.y">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ._N1</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.y" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the y coordinate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.angle">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">angle</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.angle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the angle of this coordinate in polar coordinates in degrees</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.radius">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.radius" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the radius of this coordinate in polar coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[SEPTeX.TikZ._N0,</span> <span class="pre">SEPTeX.TikZ._N1]</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the tuple <span class="math notranslate nohighlight">\((x, y)\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.polar_coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">polar_coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[float,</span> <span class="pre">float]</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.polar_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the tuple <span class="math notranslate nohighlight">\((\theta, r)\)</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.point">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">point</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point[SEPTeX.TikZ._N0,</span> <span class="pre">SEPTeX.TikZ._N1]</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.point" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.unit">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">unit</span></span><em class="property"><span class="pre">:</span> <span class="pre">AnyStr</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.unit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the all lower-case unit suffix</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.relative">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">relative</span></span><em class="property"><span class="pre">:</span> <span class="pre">bool</span></em><a class="headerlink" href="#SEPTeX.TikZ.Point.relative" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>whether or not this coordinate is relative</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.as_int">
+<span class="sig-name descname"><span class="pre">as_int</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.Point.as_int" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new coordinate <span class="math notranslate nohighlight">\((\text{int}(x), \text{int}(y))\)</span></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point">SEPTeX.TikZ.Point</a>[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.as_float">
+<span class="sig-name descname"><span class="pre">as_float</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.Point.as_float" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new coordinate <span class="math notranslate nohighlight">\((\text{float}(x), \text{float}(y))\)</span></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point">SEPTeX.TikZ.Point</a>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.geometric_length">
+<span class="sig-name descname"><span class="pre">geometric_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.Point.geometric_length" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the geometric length of this coordinate to the origin <span class="math notranslate nohighlight">\(\vec 0\)</span></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.Point.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.Point.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="polarpoint">
+<h2>PolarPoint<a class="headerlink" href="#polarpoint" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">PolarPoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZ.PolarPoint" title="SEPTeX.TikZ.PolarPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">PolarPoint</span></code></a> represents a coordinate in polar coordinates. It slightly modifies the functionality of
+<a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> but has largely the same methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angle</strong> (<em>_N0</em>) – the angle component <strong>in degrees</strong></p></li>
+<li><p><strong>radius</strong> (<em>_N1</em>) – the radial component</p></li>
+<li><p><strong>unit</strong> (<em>AnyStr</em>) – keyword-only argument, denotes the unit to suffix at the end of the <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> instance, is
+<strong>automatically converted to all lower case</strong>, for instance <code class="docutils literal notranslate"><span class="pre">PolarPoint(314,</span> <span class="pre">4,</span> <span class="pre">unit=&quot;CM&quot;)</span></code> will produce the
+output <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">314.000:</span> <span class="pre">4.000cm)</span></code></p></li>
+<li><p><strong>relative</strong> (<em>bool</em>) – whether or not this coordinate should be considered relative in the used path or not</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.POINT_TEMPLATE">
+<span class="sig-name descname"><span class="pre">POINT_TEMPLATE</span></span><em class="property"><span class="pre">:</span> <span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">=</span> <span class="pre">'{}({:</span> <span class="pre">.7f}:{:</span> <span class="pre">.7f}{unit})'</span></em><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.POINT_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format string to use when formatting a coordinate to a string.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.x">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.x" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the x coordinate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.y">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="pre">:</span> <span class="pre">float</span></em><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.y" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the y coordinate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.angle">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">angle</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ._N0</span></em><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.angle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the angle of this coordinate in polar coordinates in degrees</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.radius">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ._N1</span></em><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.radius" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the radius of this coordinate in polar coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.as_int">
+<span class="sig-name descname"><span class="pre">as_int</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.as_int" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new coordinate <span class="math notranslate nohighlight">\((\text{int}(\text{angle}), \text{int}(\text{radius}))\)</span></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZ.PolarPoint" title="SEPTeX.TikZ.PolarPoint">SEPTeX.TikZ.PolarPoint</a>[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.as_float">
+<span class="sig-name descname"><span class="pre">as_float</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.as_float" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new coordinate <span class="math notranslate nohighlight">\((\text{float}(\text{angle}), \text{float}(\text{radius}))\)</span></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#SEPTeX.TikZ.PolarPoint" title="SEPTeX.TikZ.PolarPoint">SEPTeX.TikZ.PolarPoint</a>[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.PolarPoint.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.PolarPoint.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="relpoint">
+<h2>RelPoint<a class="headerlink" href="#relpoint" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.RelPoint">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">RelPoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.RelPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZ.RelPoint" title="SEPTeX.TikZ.RelPoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">RelPoint</span></code></a> is an alias of <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> with the <code class="docutils literal notranslate"><span class="pre">relative</span></code> option set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>_N0</em>) – the x-coordinate</p></li>
+<li><p><strong>y</strong> (<em>_N1</em>) – the y-coordinate</p></li>
+<li><p><strong>unit</strong> (<em>AnyStr</em>) – keyword-only argument, denotes the unit to suffix at the end of the <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> instance, is
+<strong>automatically converted to all lower case</strong>, for instance <code class="docutils literal notranslate"><span class="pre">Point(3,</span> <span class="pre">4,</span> <span class="pre">unit=&quot;CM&quot;)</span></code> will produce the output
+<code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">3.000cm,</span>&#160; <span class="pre">4.000cm)</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> for more details.</p>
+</div>
+</dd></dl>
+
+</div>
 <div class="section" id="tikznode">
 <h2>TikZNode<a class="headerlink" href="#tikznode" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
@@ -213,38 +513,33 @@
 <dd><p><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> represents a standard TikZ node. It holds information about its coordinate, name, label and style.
 A node must first be registered with a <code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code> instance by writing it, which happens implicitly if not
 stated explicitly.</p>
-<p>Comparisons of node objects will compare the names of each node.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">TikZNode</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x0&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">TikZNode</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x0&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">TikZNode</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;origin&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">TikZNode</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinate</strong> (<em>Point</em>) – the coordinate at which this node should be placed</p></li>
+<li><p><strong>coordinate</strong> (<a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><em>Point</em></a><em>[</em><em>_N0</em><em>, </em><em>_N1</em><em>]</em>) – the coordinate at which this node should be placed</p></li>
 <li><p><strong>name</strong> (<em>AnyStr</em>) – the name which will be used to reference this node</p></li>
 <li><p><strong>label</strong> (<em>AnyStr</em>) – the label which will be displayed on the document for this node</p></li>
-<li><p><strong>relative_to</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>]</em>) – the node to consider <code class="docutils literal notranslate"><span class="pre">coordinate</span></code> to be relative to</p></li>
+<li><p><strong>relative_to</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>]</em>) – the node to consider <code class="docutils literal notranslate"><span class="pre">coordinate</span></code> to be relative to, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
 <li><p><strong>style</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this node</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.coordinate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.coordinate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.raw_coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">raw_coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point[SEPTeX.TikZ._N0,</span> <span class="pre">SEPTeX.TikZ._N1]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.raw_coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the coordinate of this node</p>
+<dd class="field-odd"><p>the raw coordinate of this node, this does not include the offset caused by a relative node</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.style">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase.TikZStyle</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.style" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.coordinate">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the style used by this node</p>
+<dd class="field-odd"><p>the true coordinate of this node, with the offset caused by the relative node</p>
 </dd>
 </dl>
 </dd></dl>
@@ -260,11 +555,41 @@ stated explicitly.</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.relative_to">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">relative_to</span></span><em class="property"><span class="pre">:</span> <span class="pre">Optional[SEPTeX.TikZ.TikZNode]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.relative_to" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the node which this node’s position is considered relative to, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.style">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase.TikZStyle</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.style" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the style used by this node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.raw_name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">raw_name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.raw_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the name of this node without the parentheses</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.name">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.name" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the name of this node</p>
+<dd class="field-odd"><p>the name of this node, including parentheses</p>
 </dd>
 </dl>
 </dd></dl>
@@ -272,12 +597,56 @@ stated explicitly.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZNode.definition">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZNode.definition" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command to draw the node in the document on its own. This is the standard when the node is written directly
-to a <code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPicture</span></code> instance. This method is equivalent to <code class="xref py py-meth docutils literal notranslate"><span class="pre">__str__()</span></code>.</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the draw command for this node</p>
+<dd class="field-odd"><p>the definition string of this object</p>
 </dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="tikzlabel">
+<h2>TikZLabel<a class="headerlink" href="#tikzlabel" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZLabel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=False)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZLabel</span></code></a> represents a TikZ label. These labels can be put on <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects, or be used as
+labels for edges in <a class="reference internal" href="#SEPTeX.TikZ.TikZPath" title="SEPTeX.TikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>AnyStr</em>) – the label text of this label</p></li>
+<li><p><strong>style</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><em>TikZStyle</em></a>) – the style of this label, <code class="docutils literal notranslate"><span class="pre">draw</span></code> is set to <code class="docutils literal notranslate"><span class="pre">False</span></code> by default</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZLabel.label">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">label</span></span><em class="property"><span class="pre">:</span> <span class="pre">AnyStr</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZLabel.label" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the label text of this label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZLabel.style">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">style</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase.TikZStyle</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZLabel.style" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the style of this label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZLabel.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZLabel.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -288,20 +657,45 @@ to a <code class="xref py py-class docutils literal notranslate"><span class="pr
 <h2>TikZPath<a class="headerlink" href="#tikzpath" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZPath" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="#SEPTeX.TikZ.TikZPath" title="SEPTeX.TikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> represents a collection of coordinates and nodes drawn using the <code class="docutils literal notranslate"><span class="pre">\draw</span></code> command of TikZ.</p>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZPath" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#SEPTeX.TikZ.TikZPath" title="SEPTeX.TikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> represents a collection of <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a>, and <a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZLabel</span></code></a>
+objects drawn using the <code class="docutils literal notranslate"><span class="pre">\draw</span></code> command of TikZ.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<em>Collection</em><em>[</em><em>Union</em><em>[</em><em>Point</em><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>]</em><em>]</em>) – a collection of <code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code> or <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects for the path</p></li>
+<li><p><strong>coordinates</strong> (<em>Sequence</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><em>Point</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><em>TikZLabel</em></a><em>]</em><em>]</em>) – a collection of <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a>, or <a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZLabel</span></code></a> objects for
+the path</p></li>
 <li><p><strong>cycle</strong> (<em>bool</em>) – whether or not to end the final path string with <code class="docutils literal notranslate"><span class="pre">cycle</span></code>, which will join the ending to the beginning</p></li>
 <li><p><strong>style</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this path</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.find_node_relations">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">find_node_relations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.find_node_relations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the relations between objects passed in through the <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> argument. It essentially returns a tuple
+of tuples indicating which <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects “point” to which other nodes. For instance, if in a path
+node <code class="docutils literal notranslate"><span class="pre">n0</span></code> points visually to <code class="docutils literal notranslate"><span class="pre">n1</span></code>, then the output of this function will be <code class="docutils literal notranslate"><span class="pre">((n0,</span> <span class="pre">n1),)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>Sequence</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><em>SEPTeX.TikZ.Point</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>SEPTeX.TikZ.TikZNode</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><em>SEPTeX.TikZ.TikZLabel</em></a><em>]</em><em>]</em>) – a collection of <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a>, or <a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZLabel</span></code></a> objects for
+the path</p></li>
+<li><p><strong>arrow_type</strong> (<em>SEPTeX.TikZBase._TikZArrow</em>) – the arrow type to consider when evaluating the node relations</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a tuple of tuples containing the relations between the nodes passed in through the <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> argument</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[Tuple[<a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode">SEPTeX.TikZ.TikZNode</a>, <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode">SEPTeX.TikZ.TikZNode</a>], …]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.arrow_type">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arrow_type</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase.TikZArrow</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.arrow_type" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arrow_type</span></span><em class="property"><span class="pre">:</span> <span class="pre">Literal[TikZArrow(key='-')]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.arrow_type" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the arrow type of a regular path is always <code class="xref py py-attr docutils literal notranslate"><span class="pre">TikZArrow.LINE</span></code></p>
@@ -313,15 +707,15 @@ to a <code class="xref py py-class docutils literal notranslate"><span class="pr
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.coordinates_string">
 <em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates_string</span></span><em class="property"><span class="pre">:</span> <span class="pre">str</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.coordinates_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts all of the coordinates of this instance to a string. If there are no coordinates then the empty string
-will be returned.</p>
+is returned.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.coordinates">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Union[SEPTeX.TikZ.Point,</span> <span class="pre">SEPTeX.TikZ.TikZNode]]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.coordinates" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinates</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Union[SEPTeX.TikZ.Point,</span> <span class="pre">SEPTeX.TikZ.TikZNode,</span> <span class="pre">SEPTeX.TikZ.TikZLabel]]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>the coordinates and nodes along this path</p>
+<dd class="field-odd"><p>the points, nodes, and labels along this path</p>
 </dd>
 </dl>
 </dd></dl>
@@ -346,6 +740,24 @@ will be returned.</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.node_relations">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">node_relations</span></span><em class="property"><span class="pre">:</span> <span class="pre">Tuple[Tuple[SEPTeX.TikZ.TikZNode,</span> <span class="pre">SEPTeX.TikZ.TikZNode],</span> <span class="pre">...]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.node_relations" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the node relations of this path, as described by <a class="reference internal" href="#SEPTeX.TikZ.TikZPath.find_node_relations" title="SEPTeX.TikZ.TikZPath.find_node_relations"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_node_relations()</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZPath.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZPath.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -353,26 +765,35 @@ will be returned.</p>
 <h2>TikZDirectedPath<a class="headerlink" href="#tikzdirectedpath" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZDirectedPath">
-<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZDirectedPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZArrow(key='-')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZDirectedPath" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-name descname"><span class="pre">TikZDirectedPath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZStyle(draw=True)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">TikZArrow(key='-')</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZDirectedPath" title="Permalink to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#SEPTeX.TikZ.TikZDirectedPath" title="SEPTeX.TikZ.TikZDirectedPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZDirectedPath</span></code></a> represents a path similarly to <a class="reference internal" href="#SEPTeX.TikZ.TikZPath" title="SEPTeX.TikZ.TikZPath"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZPath</span></code></a> but with additional information
 on the arrow type used to join up the coordinates.</p>
+<p>This class implicitly uses the <code class="docutils literal notranslate"><span class="pre">arrows</span></code> TikZ library.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinates</strong> (<em>Collection</em><em>[</em><em>Union</em><em>[</em><em>Point</em><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>]</em><em>]</em>) – a collection of <code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code> or <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects for the path</p></li>
+<li><p><strong>coordinates</strong> (<em>Sequence</em><em>[</em><em>Union</em><em>[</em><a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><em>Point</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><em>TikZNode</em></a><em>, </em><a class="reference internal" href="#SEPTeX.TikZ.TikZLabel" title="SEPTeX.TikZ.TikZLabel"><em>TikZLabel</em></a><em>]</em><em>]</em>) – a collection of <a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> or <a class="reference internal" href="#SEPTeX.TikZ.TikZNode" title="SEPTeX.TikZ.TikZNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TikZNode</span></code></a> objects for the path</p></li>
 <li><p><strong>cycle</strong> (<em>bool</em>) – whether or not to end the final path string with <code class="docutils literal notranslate"><span class="pre">cycle</span></code>, which will join the ending to the beginning</p></li>
 <li><p><strong>style</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><em>TikZStyle</em></a>) – the style to apply to this path</p></li>
-<li><p><strong>arrow_type</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZArrow" title="SEPTeX.TikZBase.TikZArrow"><em>TikZArrow</em></a>) – the <code class="xref py py-class docutils literal notranslate"><span class="pre">TikZArrow</span></code> to use for the arrow tip of the edge</p></li>
+<li><p><strong>arrow_type</strong> (<em>_TikZArrow</em>) – the <code class="xref py py-class docutils literal notranslate"><span class="pre">_TikZArrow</span></code> to use for the arrow tip of the edge</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZDirectedPath.arrow_type">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arrow_type</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase.TikZArrow</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZDirectedPath.arrow_type" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">arrow_type</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZBase._TikZArrow</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZDirectedPath.arrow_type" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>which arrow head type to use at the end of this path</p>
+<dd class="field-odd"><p>which arrow head type is used by this path</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZDirectedPath.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZDirectedPath.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 
@@ -388,15 +809,15 @@ on the arrow type used to join up the coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>coordinate</strong> (<em>Point</em>) – the center coordinate of the circle</p></li>
-<li><p><strong>radius</strong> (<em>TIKZ_VALUE</em>) – the radius of the circle</p></li>
+<li><p><strong>coordinate</strong> (<a class="reference internal" href="#SEPTeX.TikZ.Point" title="SEPTeX.TikZ.Point"><em>Point</em></a><em>[</em><em>_N0</em><em>, </em><em>_N1</em><em>]</em>) – the center coordinate of the circle</p></li>
+<li><p><strong>radius</strong> (<em>TikZValue</em>) – the radius of the circle</p></li>
 <li><p><strong>style</strong> (<a class="reference internal" href="TikZBase.html#SEPTeX.TikZBase.TikZStyle" title="SEPTeX.TikZBase.TikZStyle"><em>TikZStyle</em></a>) – the style of the circle</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZCircle.coordinate">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZCircle.coordinate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">coordinate</span></span><em class="property"><span class="pre">:</span> <span class="pre">SEPTeX.TikZ.Point[SEPTeX.TikZ._N0,</span> <span class="pre">SEPTeX.TikZ._N1]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZCircle.coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the center coordinate of this circle</p>
@@ -406,7 +827,7 @@ on the arrow type used to join up the coordinates.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="SEPTeX.TikZ.TikZCircle.radius">
-<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="pre">:</span> <span class="pre">Union[AnyStr,</span> <span class="pre">int,</span> <span class="pre">float]</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZCircle.radius" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="pre">:</span> <span class="pre">TikZValue</span></em><a class="headerlink" href="#SEPTeX.TikZ.TikZCircle.radius" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the radius of this circle</p>
@@ -421,6 +842,14 @@ on the arrow type used to join up the coordinates.</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the style used by this circle</p>
 </dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="SEPTeX.TikZ.TikZCircle.to_tikz">
+<span class="sig-name descname"><span class="pre">to_tikz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#SEPTeX.TikZ.TikZCircle.to_tikz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts this object to a TikZ string.</p>
+<dl class="field-list simple">
 </dl>
 </dd></dl>
 

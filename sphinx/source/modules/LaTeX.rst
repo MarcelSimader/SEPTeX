@@ -6,6 +6,12 @@ LaTeX
 
 ..  automodule:: SEPTeX.LaTeX
 
+LaTeXResource
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..	autoclass:: SEPTeX.LaTeX.LaTeXResource
+	:members:
+
 LaTeXDocument
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

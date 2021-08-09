@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>SEPTeX Public API Reference &mdash; SEPTeX 0.2.0 documentation</title>
+  <title>SEPTeX Public API Reference &mdash; SEPTeX 0.4.0 documentation</title>
   
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                0.2.0
+                0.4.0
               </div>
             
           
@@ -100,6 +100,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#center">Center</a></li>
@@ -110,8 +111,9 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -119,7 +121,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzcircle">TikZCircle</a></li>
@@ -204,6 +210,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/LaTeX.html">LaTeX</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexresource">LaTeXResource</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexdocument">LaTeXDocument</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#latexenvironment">LaTeXEnvironment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/LaTeX.html#center">Center</a></li>
@@ -214,8 +221,9 @@
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZBase.html">TikZBase</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzwriteable">TikZWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikznamed">TikZNamed</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefinesnamed">TikZDefinesNamed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzdefineswriteable">TikZDefinesWriteable</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzcolor">TikZColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrowdirection">TikZArrowDirection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzarrow">TikZArrow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzstyle">TikZStyle</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZBase.html#tikzpicture">TikZPicture</a></li>
@@ -223,7 +231,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/TikZ.html">TikZ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#point">Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#polarpoint">PolarPoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#relpoint">RelPoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikznode">TikZNode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzlabel">TikZLabel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzpath">TikZPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzdirectedpath">TikZDirectedPath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/TikZ.html#tikzcircle">TikZCircle</a></li>

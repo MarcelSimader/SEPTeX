@@ -164,8 +164,8 @@ class TeXHandler:
 
 class TeXResource(abc.ABC):
 	"""
-	Abstract base class for marking a class as having an open and closed state, along with text data of some sort. This
-	class requires :py:meth:`__str__` to be implemented to provide the contents of the handlers to any other caller.
+	Abstract base class for marking a class as having an open and closed state, along with TeX text data of some sort.
+	This class requires :py:meth:`to_tex` to be implemented to provide the contents of the handlers to any other caller.
 
 	In addition to the open and closed states, one can configure the resource to allow multiple openings. The default
 	behaviour is to throw an exception if the resource is opened a second time. The opening and closing is implemented as
@@ -271,5 +271,9 @@ class TeXResource(abc.ABC):
 			self.__require_state__("have been opened and closed at least once", frame_depth)
 
 	@abc.abstractmethod
-	def __str__(self) -> str:
+	def to_tex(self) -> str:
+		""" Converts this object to a TeX string. """
 		raise NotImplementedError("Subclasses of TeXResource must implement this method")
+
+	def __str__(self) -> str:
+		return self.to_tex()

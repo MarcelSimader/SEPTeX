@@ -13,31 +13,32 @@ from __future__ import annotations
 
 import math
 from numbers import Number, Real
-from typing import Union, AnyStr, Optional, Collection, Tuple, Final, TypeVar, Callable, Generic
+from typing import Union, AnyStr, Optional, Tuple, Final, TypeVar, Callable, Generic, Sequence, ClassVar, Literal
 
 from SEPModules.SEPPrinting import repr_string
 
-from SEPTeX.TikZBase import TikZWriteable, TikZNamed, TikZDefinesNamed, TikZColor, TikZStyle, TikZArrow, TIKZ_VALUE
+from SEPTeX.TikZBase import TikZWriteable, TikZNamed, TikZDefinesWriteable, TikZStyle, TikZArrow, TikZValue, \
+	EMPTY_STYLE, _LEFT, _RIGHT, _BOTH, _NONE, _TikZArrow
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ GLOBALS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-R: Final = TypeVar("R", bound=Number)
+_N0: Final = TypeVar("_N0", bound=Number)
 """ First constrained type variable for the :py:mod:`TikZ` module. The type of this variable must be a number. """
 
-T: Final = TypeVar("T", bound=Number)
+_N1: Final = TypeVar("_N1", bound=Number)
 """ Second constrained type variable for the :py:mod:`TikZ` module. The type of this variable must be a number. """
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ TIKZ OBJECTS ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-class Point(TikZWriteable, Generic[R, T]):
+class Point(TikZWriteable, Generic[_N0, _N1]):
 	r"""
 	:py:class:`Point` represented a 2 dimensional coordinate of form :math:`(x, y)`. The class additionally holds information
-	on the unit used for the values ``R`` and ``T``. Various arithmetic operations upon two points are supported, but only
-	if they share the **same unit**.
+	on the unit used for both of the values. Various arithmetic operations upon two points are supported, but only if they
+	**share the same unit**.
 
 	To perform the vector dot product on two points, use the "matrix-mul" operator ``@``.
 
@@ -45,14 +46,14 @@ class Point(TikZWriteable, Generic[R, T]):
 	:param y: the y-coordinate
 	:param unit: keyword-only argument, denotes the unit to suffix at the end of the :py:class:`Point` instance, is
 	 	**automatically converted to all lower case**, for instance ``Point(3, 4, unit="CM")`` will produce the output
-	 	 ``( 3.000cm,  4.000cm)``
-	:param relative: whether or not this point should be considered relative in the used path or not
+	 	``( 3.000cm,  4.000cm)``
+	:param relative: whether or not this coordinate should be considered relative in the used path or not
 	"""
 
-	POINT_TEMPLATE: AnyStr = r"{}({: .3f}{unit}, {: .3f}{unit})"
-	""" The format string to use when formatting a point to a string. """
+	POINT_TEMPLATE: ClassVar[str] = r"{}({: .7f}{unit}, {: .7f}{unit})"
+	""" The format string to use when formatting a coordinate to a string. """
 
-	def __init__(self, x: R, y: T, *, unit: AnyStr = "", relative: bool = False):
+	def __init__(self, x: _N0, y: _N1, *, unit: AnyStr = "", relative: bool = False):
 		super(Point, self).__init__((), ())
 		self._x = x
 		self._y = y
@@ -60,31 +61,41 @@ class Point(TikZWriteable, Generic[R, T]):
 		self._relative = relative
 
 	@property
-	def x(self) -> R:
+	def x(self) -> _N0:
 		r""" :return: the x coordinate """
 		return self._x
 
 	@property
-	def y(self) -> T:
+	def y(self) -> _N1:
 		r""" :return: the y coordinate """
 		return self._y
 
 	@property
 	def angle(self) -> float:
-		""" :return: the angle of this point in polar coordinates in degrees """
-		if self._y == 0:
+		""" :return: the angle of this coordinate in polar coordinates in degrees """
+		if self._x == 0:
 			return 0
-		return math.atan(self._x / self._y) * 180 / math.pi
+		return math.atan(self._y / self._x) * 180.0 / math.pi
 
 	@property
 	def radius(self) -> float:
-		""" :return: the radius of this point in polar coordinates """
+		""" :return: the radius of this coordinate in polar coordinates """
 		return self.geometric_length()
 
 	@property
-	def point(self) -> Tuple[R, T]:
+	def coordinate(self) -> Tuple[_N0, _N1]:
 		r""" :return: the tuple :math:`(x, y)` """
 		return self.x, self.y
+
+	@property
+	def polar_coordinate(self) -> Tuple[float, float]:
+		r""" :return: the tuple :math:`(\theta, r)` """
+		return self.angle, self.radius
+
+	@property
+	def point(self) -> Point[_N0, _N1]:
+		r""" :return: self """
+		return self
 
 	@property
 	def unit(self) -> AnyStr:
@@ -93,7 +104,7 @@ class Point(TikZWriteable, Generic[R, T]):
 
 	@property
 	def relative(self) -> bool:
-		""" :return: whether or not this point is relative """
+		""" :return: whether or not this coordinate is relative """
 		return self._relative
 
 	# arithmetic
@@ -102,49 +113,49 @@ class Point(TikZWriteable, Generic[R, T]):
 		if isinstance(other, Point):
 			if check_unit:
 				self.__require_same_unit__(other)
-			other = other.point
+			other = other.coordinate
 		if not isinstance(other, Tuple):
 			other = (other,) * 2
 		return other
 
 	def __require_same_unit__(self, other: Point) -> None:
-		if not self._unit == other._unit:
+		if self._unit != other._unit:
 			raise ValueError(f"Cannot perform arithmetic operation on points of two different units, "
-							 f"given {repr(self._unit)} and {repr(other._unit)}")
+							 f"given {self._unit!r} and {other._unit!r}")
 
 	def __require_non_zero__(self, other: Union[Real, Point, Tuple[Real, Real]], msg: AnyStr) -> None:
 		other = self.__other_as_tuple__(other)
 		if any([n == 0 for n in other]):
-			raise ZeroDivisionError(f"None of the components of {repr(other)} can be 0 for performing {msg}")
+			raise ZeroDivisionError(f"None of the components of {other!r} can be 0 for performing {msg}")
 
 	def __binary_operation__(self, other: Union[Real, Point, Tuple[Real, Real]],
-							 operator: Callable[[Real, Real], Real]) -> Point:
+							 operator: Callable[[Real, Real], Real]) -> Point[float, float]:
 		o = self.__other_as_tuple__(other, check_unit=True)
 		return Point(operator(self._x, o[0]), operator(self._y, o[1]), unit=self._unit,
 					 relative=self._relative and (not isinstance(other, Point) or other._relative))
 
-	def __add__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __add__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: a + b)
 
-	def __sub__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __sub__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: a - b)
 
-	def __mul__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __mul__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: a * b)
 
-	def __truediv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __truediv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(other, "division")
 		return self.__binary_operation__(other, lambda a, b: a / b)
 
-	def __floordiv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __floordiv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(other, "floor division")
 		return self.__binary_operation__(other, lambda a, b: a // b)
 
-	def __mod__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __mod__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(other, "modulo")
 		return self.__binary_operation__(other, lambda a, b: a % b)
 
-	def __pow__(self, power: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __pow__(self, power: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(power, lambda a, b: a ** b)
 
 	def __matmul__(self, other: Point) -> float:
@@ -152,28 +163,28 @@ class Point(TikZWriteable, Generic[R, T]):
 		return self._x * other._x + self._y * other._y
 
 	# "right" arithmetic operations
-	def __radd__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __radd__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: b + a)
 
-	def __rsub__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rsub__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: b - a)
 
-	def __rmul__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rmul__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: b * a)
 
-	def __rtruediv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rtruediv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(self, "division")
 		return self.__binary_operation__(other, lambda a, b: b / a)
 
-	def __rfloordiv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rfloordiv__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(self, "floor division")
 		return self.__binary_operation__(other, lambda a, b: b // a)
 
-	def __rmod__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rmod__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		self.__require_non_zero__(self, "modulo")
 		return self.__binary_operation__(other, lambda a, b: b % a)
 
-	def __rpow__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point:
+	def __rpow__(self, other: Union[Real, Point, Tuple[Real, Real]]) -> Point[float, float]:
 		return self.__binary_operation__(other, lambda a, b: b ** a)
 
 	def __rmatmul__(self, other: Point) -> float:
@@ -182,103 +193,105 @@ class Point(TikZWriteable, Generic[R, T]):
 
 	# misc operations
 	def as_int(self) -> Point[int, int]:
-		r""" :return: a new point :math:`(\text{int}(x), \text{int}(y))` """
+		r""" :return: a new coordinate :math:`(\text{int}(x), \text{int}(y))` """
 		return Point(int(self._x), int(self._y), unit=self._unit, relative=self._relative)
 
 	def as_float(self) -> Point[float, float]:
-		r""" :return: a new point :math:`(\text{float}(x), \text{float}(y))` """
+		r""" :return: a new coordinate :math:`(\text{float}(x), \text{float}(y))` """
 		return Point(float(self._x), float(self._y), unit=self._unit, relative=self._relative)
 
-	def __neg__(self) -> Point[R, T]:
-		r""" :return: a new point :math:`((-1) * x, (-1) * y)` """
+	def __neg__(self) -> Point[_N0, _N1]:
+		r""" :return: a new coordinate :math:`((-1) * x, (-1) * y)` """
 		return Point(-self._x, -self._y, unit=self._unit, relative=self._relative)
 
-	def __abs__(self) -> Point[R, T]:
-		r""" :return: a new point :math:`(\text{abs}(x), \text{abs}(y))` """
+	def __abs__(self) -> Point[_N0, _N1]:
+		r""" :return: a new coordinate :math:`(\text{abs}(x), \text{abs}(y))` """
 		return Point(abs(self._x), abs(self._y), unit=self._unit, relative=self._relative)
 
 	def geometric_length(self) -> float:
-		r""" :return: the geometric length of this point to the origin :math:`\vec 0` """
-		return math.sqrt(self._x ** 2 + self._y ** 2)
+		r""" :return: the geometric length of this coordinate to the origin :math:`\vec 0` """
+		return math.sqrt(self._x ** 2.0 + self._y ** 2.0)
 
 	def __hash__(self) -> int:
-		return hash((self._x, self._y, self.angle, self.radius, self._relative, self._unit))
+		return hash((round(self._x, 3), round(self._y, 3), round(self.angle, 3), round(self.radius, 3),
+					 self._relative, self._unit))
 
 	def __eq__(self, other) -> bool:
 		if not isinstance(other, Point):
 			return False
-		return (self._x == other._x) and (self._y == other._y) \
-			   and (self.angle == other.angle) and (self.radius == other.radius) \
+		return (round(self._x == other._x, 3)) and (round(self._y == other._y, 3)) \
+			   and (round(self.angle == other.angle, 3)) and (round(self.radius == other.radius, 3)) \
 			   and (self._relative == other._relative) and (self._unit == other._unit)
 
 	# str operations
-	def __str__(self) -> str:
+	def to_tikz(self) -> str:
 		return self.POINT_TEMPLATE.format("+" if self._relative else "", self._x, self._y, unit=self._unit)
 
 	def __repr__(self) -> str:
 		return repr_string(self, Point.x, Point.y, Point.unit, Point.relative)
 
-class PolarPoint(Point):
+class PolarPoint(Point[_N0, _N1]):
 	"""
-	:py:class:`PolarPoint` represents a point in polar coordinates. It modifies the functionality of :py:class:`Point`.
+	:py:class:`PolarPoint` represents a coordinate in polar coordinates. It slightly modifies the functionality of
+	:py:class:`Point` but has largely the same methods.
 
 	:param angle: the angle component **in degrees**
 	:param radius: the radial component
 	:param unit: keyword-only argument, denotes the unit to suffix at the end of the :py:class:`Point` instance, is
 	 	**automatically converted to all lower case**, for instance ``PolarPoint(314, 4, unit="CM")`` will produce the
 	 	output ``( 314.000: 4.000cm)``
-	:param relative: whether or not this point should be considered relative in the used path or not
+	:param relative: whether or not this coordinate should be considered relative in the used path or not
 	"""
 
-	POINT_TEMPLATE: AnyStr = r"{}({: .3f}:{: .3f}{unit})"
-	""" The format string to use when formatting a point to a string. """
+	POINT_TEMPLATE: ClassVar[str] = r"{}({: .7f}:{: .7f}{unit})"
+	""" The format string to use when formatting a coordinate to a string. """
 
-	def __init__(self, angle: R, radius: T, *, unit: AnyStr = "", relative: bool = False):
-		self._angle = angle % 360
+	def __init__(self, angle: _N0, radius: _N1, *, unit: AnyStr = "", relative: bool = False):
+		self._angle = angle % 360.0
 		self._radius = radius
 		super(PolarPoint, self).__init__(self.x, self.y, unit=unit, relative=relative)
 
 	@property
 	def x(self) -> float:
-		return math.cos((self._angle % 360) * math.pi / 180) * self._radius
+		return math.cos(self._angle * math.pi / 180.0) * self._radius
 
 	@property
 	def y(self) -> float:
-		return math.sin((self._angle % 360) * math.pi / 180) * self._radius
+		return math.sin(self._angle * math.pi / 180.0) * self._radius
 
 	@property
-	def angle(self) -> R:
-		return self._angle % 360
+	def angle(self) -> _N0:
+		return self._angle % 360.0
 
 	@property
-	def radius(self) -> T:
-		return self._radius % 360
+	def radius(self) -> _N1:
+		return self._radius
 
 	# misc operations
 	def as_int(self) -> PolarPoint[int, int]:
-		r""" :return: a new point :math:`(\text{int}(\text{angle}), \text{int}(\text{radius}))` """
+		r""" :return: a new coordinate :math:`(\text{int}(\text{angle}), \text{int}(\text{radius}))` """
 		return PolarPoint(int(self._angle), int(self._radius), unit=self._unit, relative=self._relative)
 
 	def as_float(self) -> PolarPoint[float, float]:
-		r""" :return: a new point :math:`(\text{float}(\text{angle}), \text{float}(\text{radius}))` """
+		r""" :return: a new coordinate :math:`(\text{float}(\text{angle}), \text{float}(\text{radius}))` """
 		return PolarPoint(float(self._angle), float(self._radius), unit=self._unit, relative=self._relative)
 
-	def __neg__(self) -> PolarPoint[R, T]:
-		r""" :return: a new point :math:`(\text{angle} \text{ mod } 360, (-1) * \text{radius})` """
+	def __neg__(self) -> PolarPoint[_N0, _N1]:
+		r""" :return: a new coordinate :math:`(\text{angle} \text{ mod } 360, (-1) * \text{radius})` """
 		return PolarPoint(self._angle % 360, -self._radius, unit=self._unit, relative=self._relative)
 
-	def __abs__(self) -> PolarPoint[R, T]:
-		r""" :return: a new point :math:`(\text{abs}(\text{angle}), \text{abs}(\text{radius}))` """
+	def __abs__(self) -> PolarPoint[_N0, _N1]:
+		r""" :return: a new coordinate :math:`(\text{abs}(\text{angle}), \text{abs}(\text{radius}))` """
 		return PolarPoint(abs(self._angle), abs(self._radius), unit=self._unit, relative=self._relative)
 
 	# str operations
-	def __str__(self) -> str:
+	def to_tikz(self) -> str:
 		return self.POINT_TEMPLATE.format("+" if self._relative else "", self._angle, self._radius, unit=self._unit)
 
 	def __repr__(self) -> str:
 		return repr_string(self, PolarPoint.angle, PolarPoint.radius, PolarPoint.unit, PolarPoint.relative)
 
-class RelPoint(Point):
+class RelPoint(Point[_N0, _N1]):
 	"""
 	:py:class:`RelPoint` is an alias of :py:class:`Point` with the ``relative`` option set to ``True`` by default.
 
@@ -286,63 +299,60 @@ class RelPoint(Point):
 	:param y: the y-coordinate
 	:param unit: keyword-only argument, denotes the unit to suffix at the end of the :py:class:`Point` instance, is
 	 	**automatically converted to all lower case**, for instance ``Point(3, 4, unit="CM")`` will produce the output
-	 	 ``( 3.000cm,  4.000cm)``
+	 	``( 3.000cm,  4.000cm)``
 
 	..	seealso:: :py:class:`Point` for more details.
 	"""
 
-	def __init__(self, x: T, y: T, *, unit: AnyStr = ""):
+	def __init__(self, x: _N0, y: _N1, *, unit: AnyStr = ""):
 		super(RelPoint, self).__init__(x, y, unit=unit, relative=True)
 
-class TikZNode(TikZDefinesNamed[TikZColor], TikZNamed):
+class TikZNode(TikZDefinesWriteable[TikZStyle], TikZNamed):
 	"""
 	:py:class:`TikZNode` represents a standard TikZ node. It holds information about its coordinate, name, label and style.
 	A node must first be registered with a :py:class:`TikZPicture` instance by writing it, which happens implicitly if not
 	stated explicitly.
 
-	Comparisons of node objects will compare the names of each node.
-
-	>>> assert TikZNode(Point(5, 2), name="x0") == TikZNode(Point(20, -4), name="x0")
-	>>> assert TikZNode(Point(0, 0), name="origin") != TikZNode(Point(0, 0), name="o")
-
 	:param coordinate: the coordinate at which this node should be placed
 	:param name: the name which will be used to reference this node
 	:param label: the label which will be displayed on the document for this node
-	:param relative_to: the node to consider ``coordinate`` to be relative to
+	:param relative_to: the node to consider ``coordinate`` to be relative to, or ``None``
 	:param style: the style to apply to this node
 	"""
 
 	def __init__(self,
-				 coordinate: Point = Point(0, 0),
+				 coordinate: Point[_N0, _N1] = Point(0, 0),
 				 name: AnyStr = "",
 				 label: AnyStr = "",
 				 relative_to: Optional[TikZNode] = None,
-				 style: TikZStyle = TikZStyle()):
-		super(TikZNode, self).__init__((), (), styles=(style,), named_objs=())
+				 style: TikZStyle = EMPTY_STYLE):
+		super(TikZNode, self).__init__((), (), (style,))
 
 		if coordinate.relative:
 			raise ValueError(f"Passed in coordinate {repr(coordinate)} cannot be set to relative")
 
+		self._coordinate = coordinate
 		if relative_to is not None:
 			if not coordinate.unit == relative_to.coordinate.unit:
 				raise ValueError(f"Coordinate units of 'relative_to' node must match the supplied units "
-								 f"({repr(coordinate.unit)}), but received {repr(relative_to.coordinate.unit)}")
-			coordinate = relative_to.coordinate + coordinate
+								 f"({coordinate.unit!r}), but received {relative_to.coordinate.unit!r}")
+			self._coordinate += relative_to._coordinate
 
-		self._coordinate = coordinate
+		self._raw_coordinate = coordinate
 		self._name = str(name)
 		self._label = str(label)
+		self._relative_to = relative_to
 		self._style = style
 
 	@property
-	def coordinate(self) -> Point:
-		""" :return: the coordinate of this node """
-		return self._coordinate
+	def raw_coordinate(self) -> Point[_N0, _N1]:
+		""" :return: the raw coordinate of this node, this does not include the offset caused by a relative node """
+		return self._raw_coordinate
 
 	@property
-	def style(self) -> TikZStyle:
-		""" :return: the style used by this node """
-		return self._style
+	def coordinate(self) -> Point:
+		""" :return: the true coordinate of this node, with the offset caused by the relative node """
+		return self._coordinate
 
 	@property
 	def label(self) -> str:
@@ -350,89 +360,131 @@ class TikZNode(TikZDefinesNamed[TikZColor], TikZNamed):
 		return self._label
 
 	@property
-	def name(self) -> str:
-		""" :return: the name of this node """
+	def relative_to(self) -> Optional[TikZNode]:
+		""" :return: the node which this node's position is considered relative to, or ``None`` """
+		return self._relative_to
+
+	@property
+	def style(self) -> TikZStyle:
+		""" :return: the style used by this node """
+		return self._style
+
+	@property
+	def raw_name(self) -> str:
+		""" :return: the name of this node without the parentheses """
 		return self._name
 
 	@property
+	def name(self) -> str:
+		""" :return: the name of this node, including parentheses """
+		return "" if self._name == "" else f"({self._name})"
+
+	@property
 	def definition(self) -> str:
-		"""
-		The command to draw the node in the document on its own. This is the standard when the node is written directly
-		to a :py:class:`TikZPicture` instance. This method is equivalent to :py:meth:`__str__`.
-
-		:return: the draw command for this node
-		"""
-		return f"\\node[{str(self._style)}]{'' if self._name == '' else f' ({self._name})'}" \
-			   f" at {str(self._coordinate)} {{{self._label}}};"
-
-	def __hash__(self):
-		return hash(self._name)
-
-	def __eq__(self, other):
-		return isinstance(other, TikZNode) and self._name == other._name
-
-	def __ne__(self, other):
-		return not isinstance(other, TikZNode) or self._name != other._name
-
-	def __str__(self) -> str:
-		return self.definition
+		return f"\\node[{self._style.to_tikz()}] {self.name}" \
+			   f" at {self._coordinate.to_tikz()} {{{self._label}}};"
 
 	def __repr__(self) -> str:
 		return repr_string(self, TikZNode.coordinate, TikZNode.name, TikZNode.label)
 
-class TikZLabel(TikZDefinesNamed[TikZColor]):
+class TikZLabel(TikZDefinesWriteable[TikZStyle]):
 	"""
-	DOCS write docs for TikZLabel
+	:py:class:`TikZLabel` represents a TikZ label. These labels can be put on :py:class:`TikZNode` objects, or be used as
+	labels for edges in :py:class:`TikZPath` objects.
+
+	:param label: the label text of this label
+	:param style: the style of this label, ``draw`` is set to ``False`` by default
 	"""
 
 	def __init__(self,
 				 label: AnyStr = "",
 				 style: TikZStyle = TikZStyle(draw=False)):
-		super(TikZLabel, self).__init__((), (), styles=(style,), named_objs=())
+		super(TikZLabel, self).__init__((), (), (style,))
 
 		self._label = label
 		self._style = style
 
 	@property
 	def label(self) -> AnyStr:
+		""" :return: the label text of this label """
 		return self._label
 
 	@property
 	def style(self) -> TikZStyle:
+		""" :return: the style of this label """
 		return self._style
 
-	def __str__(self) -> str:
-		return f"node [{self._style}] {{{self._label}}}"
+	def __hash__(self) -> int:
+		return hash((self._label, self._style))
 
-class TikZPath(TikZDefinesNamed[TikZNode]):
+	def __eq__(self, other) -> bool:
+		return isinstance(other, TikZLabel) and self._label == other._label and self._style == other._style
+
+	def to_tikz(self) -> str:
+		return f"node [{self._style.to_tikz()}] {{{self._label}}}"
+
+class TikZPath(TikZDefinesWriteable[Union[TikZStyle, TikZNode]]):
 	r"""
-	:py:class:`TikZPath` represents a collection of coordinates and nodes drawn using the ``\draw`` command of TikZ.
+	:py:class:`TikZPath` represents a collection of :py:class:`Point`, :py:class:`TikZNode`, and :py:class:`TikZLabel`
+	objects drawn using the ``\draw`` command of TikZ.
 
-	:param coordinates: a collection of :py:class:`Point` or :py:class:`TikZNode` objects for the path
+	:param coordinates: a collection of :py:class:`Point`, :py:class:`TikZNode`, or :py:class:`TikZLabel` objects for
+		the path
 	:param cycle: whether or not to end the final path string with ``cycle``, which will join the ending to the beginning
 	:param style: the style to apply to this path
 	"""
 
-	_COORDINATE_JOINER = r" -- "
+	_COORDINATE_JOINER: ClassVar[str] = r" -- "
 	r""" The symbol to use between the coordinates in the ``\draw`` command. """
 
 	def __init__(self,
-				 coordinates: Collection[Union[Point, TikZNode]],
+				 coordinates: Sequence[Union[Point, TikZNode, TikZLabel]],
 				 cycle: bool = False,
-				 label: Optional[TikZLabel] = None,
-				 style: TikZStyle = TikZStyle()):
-		super(TikZPath, self).__init__((), (),
-									   styles=(style,),
-									   named_objs=[n for n in coordinates if isinstance(n, TikZNamed)])
+				 style: TikZStyle = EMPTY_STYLE):
+		super(TikZPath, self).__init__((), (), (style, *coordinates))
 
 		self._coordinates = tuple(coordinates)
 		self._coordinates_string = None
 		self._cycle = cycle
-		self._label = label
 		self._style = style
 
+		# find node relations
+		self._node_relations = self.find_node_relations(self._coordinates, self.arrow_type)
+
+	@staticmethod
+	def find_node_relations(coordinates: Sequence[Union[Point, TikZNode, TikZLabel]],
+							arrow_type: _TikZArrow) -> Tuple[Tuple[TikZNode, TikZNode], ...]:
+		"""
+		Finds the relations between objects passed in through the ``coordinates`` argument. It essentially returns a tuple
+		of tuples indicating which :py:class:`TikZNode` objects "point" to which other nodes. For instance, if in a path
+		node ``n0`` points visually to ``n1``, then the output of this function will be ``((n0, n1),)``.
+
+		:param coordinates: a collection of :py:class:`Point`, :py:class:`TikZNode`, or :py:class:`TikZLabel` objects for
+			the path
+		:param arrow_type: the arrow type to consider when evaluating the node relations
+		:return: a tuple of tuples containing the relations between the nodes passed in through the ``coordinates`` argument
+		"""
+		coord_nodes = tuple(c for c in coordinates if isinstance(c, TikZNode))
+		return_list = list()
+
+		if len(coord_nodes) >= 1:
+			# add for last two nodes
+			if arrow_type.direction == _LEFT:
+				return_list.append((coord_nodes[-1], coord_nodes[-2]))
+			elif arrow_type.direction == _RIGHT:
+				return_list.append((coord_nodes[-2], coord_nodes[-1]))
+			elif arrow_type.direction in (_NONE, _BOTH):
+				return_list.extend(((coord_nodes[-1], coord_nodes[-2]), (coord_nodes[-2], coord_nodes[-1])))
+
+			# add for other nodes except last
+			for a, b in zip(coord_nodes[:-2], coord_nodes[1:-1]):
+				return_list.extend(((a, b), (b, a)))
+
+		# empty tuple if none found
+		return tuple(return_list)
+
 	@property
-	def arrow_type(self) -> TikZArrow:
+	def arrow_type(self) -> Literal[TikZArrow.LINE]:
 		""" :return: the arrow type of a regular path is always :py:attr:`TikZArrow.LINE` """
 		return TikZArrow.LINE
 
@@ -440,20 +492,23 @@ class TikZPath(TikZDefinesNamed[TikZNode]):
 	def coordinates_string(self) -> str:
 		"""
 		Converts all of the coordinates of this instance to a string. If there are no coordinates then the empty string
-		will be returned.
+		is returned.
 		"""
 		if self._coordinates_string is None:
-			if len(self._coordinates) <= 0:
-				self._coordinates_string = str()
-			else:
-				coords = [f"({c.name})" if isinstance(c, TikZNode)
-						  else str(c) for c in self._coordinates]
-				self._coordinates_string = self._COORDINATE_JOINER.join(coords)
+			self._coordinates_string = str()
+			for i, c in enumerate(self._coordinates):
+				if i == len(self._coordinates) - 1:
+					self._coordinates_string += c.to_tikz()
+				elif isinstance(c, TikZLabel):
+					self._coordinates_string += f"{c.to_tikz()} "
+				else:
+					self._coordinates_string += f"{c.to_tikz()}{self._COORDINATE_JOINER}"
+
 		return self._coordinates_string
 
 	@property
-	def coordinates(self) -> Tuple[Union[Point, TikZNode]]:
-		""" :return: the coordinates and nodes along this path """
+	def coordinates(self) -> Tuple[Union[Point, TikZNode, TikZLabel]]:
+		""" :return: the points, nodes, and labels along this path """
 		return self._coordinates
 
 	@property
@@ -462,18 +517,25 @@ class TikZPath(TikZDefinesNamed[TikZNode]):
 		return self._cycle
 
 	@property
-	def label(self) -> Optional[TikZLabel]:
-		return self._label
-
-	@property
 	def style(self) -> TikZStyle:
 		""" :return: the style used by this path for its edge """
 		return self._style
 
-	def __str__(self) -> str:
-		return f"\\draw[{str(self._style)}] {self.coordinates_string}" \
-			   f"{f'{self._COORDINATE_JOINER}cycle' if self.cycle else ''}" \
-			   f"{'' if self._label is None else f' node[{self._label.style}] {{{self._label.label}}}'};"
+	@property
+	def node_relations(self) -> Tuple[Tuple[TikZNode, TikZNode], ...]:
+		""" :return: the node relations of this path, as described by :py:meth:`find_node_relations` """
+		return self._node_relations
+
+	def __hash__(self) -> int:
+		return hash((self._style, self._coordinates, self._cycle))
+
+	def __eq__(self, other) -> bool:
+		return isinstance(other, TikZPath) and self._style == other._style \
+			   and self._coordinates == other._coordinates and self._cycle == other._cycle
+
+	def to_tikz(self) -> str:
+		return f"\\draw[{self._style.to_tikz()}] {self.coordinates_string}" \
+			   f"{f'{self._COORDINATE_JOINER}cycle' if self.cycle else ''};"
 
 	def __repr__(self) -> str:
 		return repr_string(self, TikZPath.coordinates, TikZPath.cycle)
@@ -483,41 +545,40 @@ class TikZDirectedPath(TikZPath):
 	:py:class:`TikZDirectedPath` represents a path similarly to :py:class:`TikZPath` but with additional information
 	on the arrow type used to join up the coordinates.
 
+	This class implicitly uses the ``arrows`` TikZ library.
+
 	:param coordinates: a collection of :py:class:`Point` or :py:class:`TikZNode` objects for the path
 	:param cycle: whether or not to end the final path string with ``cycle``, which will join the ending to the beginning
 	:param style: the style to apply to this path
-	:param arrow_type: the :py:class:`TikZArrow` to use for the arrow tip of the edge
+	:param arrow_type: the :py:class:`_TikZArrow` to use for the arrow tip of the edge
 	"""
 
-	_COORDINATE_JOINER = r" to "
+	_COORDINATE_JOINER: ClassVar[str] = r" to "
 	r""" The symbol to use between the coordinates in the ``\draw`` command. """
 
 	def __init__(self,
-				 coordinates: Collection[Union[Point, TikZNode]],
+				 coordinates: Sequence[Union[Point, TikZNode, TikZLabel]],
 				 cycle: bool = False,
-				 label: Optional[TikZLabel] = None,
-				 style: TikZStyle = TikZStyle(),
-				 arrow_type: TikZArrow = TikZArrow.LINE):
-		super(TikZDirectedPath, self).__init__(coordinates, cycle, label, style)
+				 style: TikZStyle = EMPTY_STYLE,
+				 arrow_type: _TikZArrow = TikZArrow.LINE):
+		self._arrow_type = arrow_type
+		super(TikZDirectedPath, self).__init__(coordinates, cycle, style)
 		self.__register_required_tikz_library__("arrows")
 
-		self._arrow_type = arrow_type
-
 	@property
-	def arrow_type(self) -> TikZArrow:
-		""" :return: which arrow head type to use at the end of this path """
+	def arrow_type(self) -> _TikZArrow:
+		""" :return: which arrow head type is used by this path """
 		return self._arrow_type
 
-	def __str__(self) -> str:
-		style_list = [x for x in (self._arrow_type.key, str(self._style)) if len(x) > 0]
+	def to_tikz(self) -> str:
+		style_list = [x for x in (self._arrow_type.key, self._style.to_tikz()) if len(x) > 0]
 		return f"\\draw[{', '.join(style_list)}] {self.coordinates_string}" \
-			   f"{f'{self._COORDINATE_JOINER}cycle' if self.cycle else ''}" \
-			   f"{'' if self._label is None else f' node[{self._label.style}] {{{self._label.label}}}'};"
+			   f"{f'{self._COORDINATE_JOINER}cycle' if self.cycle else ''};"
 
 	def __repr__(self) -> str:
 		return repr_string(self, TikZDirectedPath.coordinates, TikZDirectedPath.cycle, TikZDirectedPath.arrow_type)
 
-class TikZCircle(TikZDefinesNamed[TikZColor]):
+class TikZCircle(TikZDefinesWriteable[TikZStyle]):
 	"""
 	:py:class:`TikZCircle` represents a standard TikZ circle, with a center coordinate, radius and style.
 
@@ -527,22 +588,22 @@ class TikZCircle(TikZDefinesNamed[TikZColor]):
 	"""
 
 	def __init__(self,
-				 coordinate: Point,
-				 radius: TIKZ_VALUE,
-				 style: TikZStyle = TikZStyle()):
-		super(TikZCircle, self).__init__((), (), styles=(style,), named_objs=())
+				 coordinate: Point[_N0, _N1],
+				 radius: TikZValue,
+				 style: TikZStyle = EMPTY_STYLE):
+		super(TikZCircle, self).__init__((), (), (style,))
 
 		self._coordinate = coordinate
 		self._radius = radius
 		self._style = style
 
 	@property
-	def coordinate(self) -> Point:
+	def coordinate(self) -> Point[_N0, _N1]:
 		""" :return: the center coordinate of this circle """
 		return self._coordinate
 
 	@property
-	def radius(self) -> TIKZ_VALUE:
+	def radius(self) -> TikZValue:
 		""" :return: the radius of this circle """
 		return self._radius
 
@@ -551,8 +612,15 @@ class TikZCircle(TikZDefinesNamed[TikZColor]):
 		""" :return: the style used by this circle """
 		return self._style
 
-	def __str__(self) -> str:
-		return f"\\draw[{str(self._style)}] {str(self._coordinate)} circle ({self._radius});"
+	def __hash__(self) -> int:
+		return hash((self._coordinate, self._radius, self._style))
+
+	def __eq__(self, other) -> bool:
+		return isinstance(other, TikZCircle) and self._coordinate == other._coordinate \
+			   and self._radius == other._radius and self._style == other._style
+
+	def to_tikz(self) -> str:
+		return f"\\draw[{self._style.to_tikz()}] {self._coordinate.to_tikz()} circle ({self._radius});"
 
 	def __repr__(self) -> str:
 		return repr_string(self, TikZCircle.coordinate, TikZCircle.radius)

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#D:/OneDrive - Johannes Kepler Universität Linz/Projects/Python/SEPTeX/SEPTeX</OriginalElement>
+  <nodes>
+    <node x="150.0" y="786.5">TikZBase.TikZPicture</node>
+    <node x="753.5" y="1104.5">TeXBase.TeXHandler</node>
+    <node x="607.5" y="946.5">TikZ.TikZDirectedPath</node>
+    <node x="192.5" y="444.5">TikZBase.TikZNamed</node>
+    <node x="70.0" y="644.5">TeXBase.TeXResource</node>
+    <node x="344.0" y="1004.5">TeXBase.TeXError</node>
+    <node x="744.5" y="564.5">TikZBase.TikZWriteable</node>
+    <node x="439.0" y="504.5">TikZBase.TikZColor</node>
+    <node x="794.5" y="444.5">abc.ABC</node>
+    <node x="63.5" y="1166.5">TikZBase.TikZArrow</node>
+    <node x="527.5" y="804.5">TikZBase.TikZDefinesNamed</node>
+    <node x="567.5" y="1088.5">TikZ.TikZLabel</node>
+    <node x="-6.0" y="444.5">TikZ.TikZNode</node>
+    <node x="779.0" y="724.5">TikZ.RelPoint</node>
+    <node x="-16.5" y="1024.5">enum.Enum</node>
+    <node x="541.0" y="564.5">TikZBase.TikZStyle</node>
+    <node x="762.5" y="1017.5">TikZ.TikZCircle</node>
+    <node x="514.0" y="715.5">LaTeX.LaTeXDocument</node>
+    <node x="110.0" y="715.5">LaTeX.LaTeXEnvironment</node>
+    <node x="952.5" y="644.5">TikZ.PolarPoint</node>
+    <node x="23.5" y="1237.5">TikZBase._TikZArrowDirection</node>
+    <node x="208.5" y="564.5">typing.Hashable</node>
+    <node x="567.5" y="875.5">TikZ.TikZPath</node>
+    <node x="190.0" y="857.5">TikZBase.TikZScope</node>
+    <node x="372.0" y="928.5">LaTeX.Center</node>
+    <node x="23.5" y="1095.5">TikZBase._TikZArrow</node>
+    <node x="384.0" y="1075.5">Exception</node>
+    <node x="150.0" y="999.5">LaTeX.Figure</node>
+    <node x="789.5" y="644.5">TikZ.Point</node>
+    <node x="150.0" y="928.5">LaTeX.MathsEnvironment</node>
+    <node x="567.5" y="1017.5">TikZGraph.TikZGraph</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="TikZBase.TikZWriteable" target="abc.ABC" relationship="REALIZATION">
+      <point x="-95.5" y="0.0" />
+      <point x="724.0" y="580.0" />
+      <point x="724.0" y="460.0" />
+      <point x="-45.5" y="0.0" />
+    </edge>
+    <edge source="LaTeX.MathsEnvironment" target="LaTeX.LaTeXEnvironment" relationship="REALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="251.0" y="980.0" />
+      <point x="132.5" y="980.0" />
+      <point x="132.5" y="767.0" />
+      <point x="211.0" y="767.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZPath" target="TikZBase.TikZDefinesNamed" relationship="REALIZATION">
+      <point x="-62.0" y="0.0" />
+      <point x="533.0" y="891.0" />
+      <point x="533.0" y="858.0" />
+      <point x="640.0" y="858.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZNode" target="TikZBase.TikZNamed" relationship="REALIZATION">
+      <point x="-15.0" y="15.5" />
+      <point x="45.0" y="498.0" />
+      <point x="200.0" y="498.0" />
+      <point x="-80.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZStyle" target="TikZBase.TikZWriteable" relationship="REALIZATION">
+      <point x="-15.0" y="15.5" />
+      <point x="605.0" y="640.0" />
+      <point x="766.5" y="640.0" />
+      <point x="-73.5" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZPicture" target="LaTeX.LaTeXEnvironment" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="235.5" y="767.0" />
+      <point x="211.0" y="767.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZNamed" target="typing.Hashable" relationship="INTERFACE">
+      <point x="87.5" y="0.0" />
+      <point x="404.0" y="460.0" />
+      <point x="404.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZScope" target="TikZBase.TikZPicture" relationship="REALIZATION">
+      <point x="-38.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZLabel" target="TikZBase.TikZDefinesNamed" relationship="REALIZATION">
+      <point x="-65.5" y="0.0" />
+      <point x="533.0" y="1104.0" />
+      <point x="533.0" y="858.0" />
+      <point x="640.0" y="858.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZCircle" target="TikZBase.TikZDefinesNamed" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="828.5" y="1000.0" />
+      <point x="533.0" y="1000.0" />
+      <point x="533.0" y="858.0" />
+      <point x="640.0" y="858.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZGraph.TikZGraph" target="TikZBase.TikZDefinesNamed" relationship="REALIZATION">
+      <point x="-87.5" y="0.0" />
+      <point x="533.0" y="1033.0" />
+      <point x="533.0" y="858.0" />
+      <point x="640.0" y="858.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.RelPoint" target="TikZ.Point" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="enum.Enum" target="typing.Hashable" relationship="INTERFACE">
+      <point x="0.0" y="-15.5" />
+      <point x="40.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="LaTeX.Center" target="LaTeX.LaTeXEnvironment" relationship="REALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="433.0" y="980.0" />
+      <point x="132.5" y="980.0" />
+      <point x="132.5" y="767.0" />
+      <point x="211.0" y="767.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZDefinesNamed" target="abc.ABC" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="640.0" y="764.0" />
+      <point x="724.0" y="764.0" />
+      <point x="724.0" y="460.0" />
+      <point x="-45.5" y="0.0" />
+    </edge>
+    <edge source="TikZBase.TikZNamed" target="TikZBase.TikZWriteable" relationship="REALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="280.0" y="520.0" />
+      <point x="389.0" y="520.0" />
+      <point x="389.0" y="640.0" />
+      <point x="766.5" y="640.0" />
+      <point x="-73.5" y="15.5" />
+    </edge>
+    <edge source="LaTeX.LaTeXDocument" target="TeXBase.TeXResource" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="608.0" y="696.0" />
+      <point x="160.0" y="696.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.Point" target="TikZBase.TikZWriteable" relationship="REALIZATION">
+      <point x="-50.5" y="0.0" />
+      <point x="739.0" y="660.0" />
+      <point x="739.0" y="640.0" />
+      <point x="766.5" y="640.0" />
+      <point x="-73.5" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZNode" target="TikZBase.TikZDefinesNamed" relationship="REALIZATION">
+      <point x="-35.0" y="15.5" />
+      <point x="25.0" y="911.0" />
+      <point x="533.0" y="911.0" />
+      <point x="533.0" y="858.0" />
+      <point x="640.0" y="858.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZStyle" target="typing.Hashable" relationship="INTERFACE">
+      <point x="0.0" y="15.5" />
+      <point x="620.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase._TikZArrow" target="enum.Enum" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="109.5" y="1076.0" />
+      <point x="40.0" y="1076.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZNode" target="typing.Hashable" relationship="INTERFACE">
+      <point x="0.0" y="15.5" />
+      <point x="60.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.TikZDirectedPath" target="TikZ.TikZPath" relationship="REALIZATION">
+      <point x="-68.5" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase._TikZArrowDirection" target="enum.Enum" relationship="REALIZATION">
+      <point x="107.0" y="-15.5" />
+      <point x="247.0" y="1076.0" />
+      <point x="40.0" y="1076.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TeXBase.TeXError" target="Exception" relationship="REALIZATION">
+      <point x="14.5" y="15.5" />
+      <point x="0.0" y="-15.5" />
+    </edge>
+    <edge source="LaTeX.LaTeXEnvironment" target="TeXBase.TeXResource" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="211.0" y="696.0" />
+      <point x="160.0" y="696.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="LaTeX.Figure" target="LaTeX.LaTeXEnvironment" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="210.0" y="980.0" />
+      <point x="132.5" y="980.0" />
+      <point x="132.5" y="767.0" />
+      <point x="211.0" y="767.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZColor" target="TikZBase.TikZNamed" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="520.0" y="412.0" />
+      <point x="175.0" y="412.0" />
+      <point x="175.0" y="498.0" />
+      <point x="200.0" y="498.0" />
+      <point x="-80.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZColor" target="typing.Hashable" relationship="INTERFACE">
+      <point x="-81.0" y="0.0" />
+      <point x="404.0" y="520.0" />
+      <point x="404.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZBase.TikZArrow" target="TikZBase._TikZArrow" relationship="REALIZATION">
+      <point x="-37.0" y="-15.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.PolarPoint" target="TikZ.Point" relationship="REALIZATION">
+      <point x="0.0" y="15.5" />
+      <point x="1020.0" y="700.0" />
+      <point x="840.0" y="700.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TikZ.Point" target="typing.Hashable" relationship="INTERFACE">
+      <point x="0.0" y="-15.5" />
+      <point x="840.0" y="620.0" />
+      <point x="280.0" y="620.0" />
+      <point x="0.0" y="15.5" />
+    </edge>
+    <edge source="TeXBase.TeXResource" target="abc.ABC" relationship="REALIZATION">
+      <point x="90.0" y="0.0" />
+      <point x="724.0" y="660.0" />
+      <point x="724.0" y="460.0" />
+      <point x="-45.5" y="0.0" />
+    </edge>
+    <edge source="TikZBase.TikZNamed" target="abc.ABC" relationship="REALIZATION">
+      <point x="0.0" y="-15.5" />
+      <point x="280.0" y="427.0" />
+      <point x="724.0" y="427.0" />
+      <point x="724.0" y="460.0" />
+      <point x="-45.5" y="0.0" />
+    </edge>
+    <edge source="TikZBase.TikZDefinesNamed" target="TikZBase.TikZWriteable" relationship="REALIZATION">
+      <point x="99.0" y="-15.5" />
+      <point x="739.0" y="640.0" />
+      <point x="766.5" y="640.0" />
+      <point x="-73.5" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Compact" zoom="1.0" showDependencies="false" x="535.5" y="840.5" />
+  <SelectedNodes />
+  <Categories />
+</Diagram>
+

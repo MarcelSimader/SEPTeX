@@ -20,9 +20,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 project = 'SEPTeX'
 copyright = '2021, Marcel Simader'
 author = 'Marcel Simader'
-
-# The full version, including alpha/beta/rc tags
-release = '0.2.0'
+release = '0.4.0'
 version = release
 
 # ~~~~~~~~~~~~~~~ CUSTOM CONF ~~~~~~~~~~~~~~~
@@ -31,26 +29,20 @@ add_module_names = False
 
 # -- General configuration ---------------------------------------------------
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "sphinx_rtd_theme"]
-
-# Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-html_static_path = ["_static"]
-html_css_files = ["custom.css"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
 html_theme = "sphinx_rtd_theme"
-
 html_theme_options = {
 		"display_version"    : True,
 		"collapse_navigation": False
 		}
+
+html_static_path = ["_static"]
+html_css_files = ["custom.css"]
 
 # ~~~~~~~~~~~~~~~ sphinx.ext.to do CONFIG ~~~~~~~~~~~~~~~
 todo_include_todos = True
@@ -62,6 +54,9 @@ autodoc_inherit_docstrings = True
 autodoc_class_signature = "separated"
 autodoc_typehints_description_target = "documented"
 autodoc_type_aliases = {
+		"TikZValue": ".TikZValue",
+		"ColorTuple": ".ColorTuple",
+		"DictVal": ".DictVal"
 		}
 
 autodoc_default_options = {
